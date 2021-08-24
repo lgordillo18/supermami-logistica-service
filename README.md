@@ -1,2 +1,2 @@
-# supermami-logistics-service
+# supermami-logistica-service
 Supermami Logistics Backend Service
