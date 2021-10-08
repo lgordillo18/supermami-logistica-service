@@ -1,13 +1,13 @@
-package com.logisticasupermami.logisticaservice;
+package com.supermamilogisticaservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LogisticaServiceApplication {
+public class SupermamiLogisticaServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LogisticaServiceApplication.class, args);
+		SpringApplication.run(SupermamiLogisticaServiceApplication.class, args);
 	}
 
 }
