@@ -1,10 +1,10 @@
-package com.logisticasupermami.logisticaservice;
+package com.supermamilogisticaservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LogisticaServiceApplicationTests {
+class SupermamiLogisticaServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
