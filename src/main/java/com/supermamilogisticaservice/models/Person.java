@@ -8,8 +8,7 @@ import javax.persistence.*;
 public class Person {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-  @SequenceGenerator(name = "sequenceGenerator",  sequenceName = "person_id_seq")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private int id;
 
@@ -20,10 +19,10 @@ public class Person {
   private String last_name;
 
   @Column(name = "dni", nullable = false)
-  private int dni;
+  private String dni;
 
   @Column(name = "telefono")
-  private int phone_number;
+  private String phone_number;
 
   @Column(name = "email")
   private String email;
@@ -55,19 +54,19 @@ public class Person {
     this.last_name = last_name;
   }
 
-  public int getDni() {
+  public String getDni() {
     return dni;
   }
 
-  public void setDni(int dni) {
+  public void setDni(String dni) {
     this.dni = dni;
   }
 
-  public int getPhone_number() {
+  public String getPhone_number() {
     return phone_number;
   }
 
-  public void setPhone_number(int phone_number) {
+  public void setPhone_number(String phone_number) {
     this.phone_number = phone_number;
   }
 
