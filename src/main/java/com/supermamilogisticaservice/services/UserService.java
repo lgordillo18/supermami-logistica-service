@@ -5,6 +5,8 @@ import com.supermamilogisticaservice.repositories.IUserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+
 @Service
 public class UserService {
   @Autowired
@@ -12,5 +14,9 @@ public class UserService {
 
   public User saveUser(User user) {
     return iUserRepository.save(user);
+  }
+
+  public ArrayList<User> getAllUsers(){
+    return (ArrayList<User>) iUserRepository.findAll();
   }
 }
