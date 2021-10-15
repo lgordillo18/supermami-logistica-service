@@ -18,11 +18,12 @@ public class User extends Employee implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "id_rol", nullable = false)
-    private int id_rol;
+    @ManyToOne()
+    @JoinColumn(name = "id_rol", foreignKey = @ForeignKey(name = "fk_employee_rol", value = ConstraintMode.CONSTRAINT))
+    private Rol rol;
 
-    @Column(name = "estado", nullable = false)
-    private Boolean status = true;
+    @Column(name = "activo", nullable = false)
+    private boolean active = true;
 
     public String getUsername() {
         return username;
@@ -40,19 +41,19 @@ public class User extends Employee implements Serializable {
         this.password = password;
     }
 
-    public int getId_rol() {
-        return id_rol;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setId_rol(int id_rol) {
-        this.id_rol = id_rol;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
