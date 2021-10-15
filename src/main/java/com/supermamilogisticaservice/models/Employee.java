@@ -13,25 +13,27 @@ import java.io.Serializable;
 public class Employee extends Person implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  @Column(name = "id_area")
-  private int id_area;
+  @ManyToOne()
+  @JoinColumn(name = "id_sucursal", foreignKey = @ForeignKey(name = "fk_employee_sucursal", value = ConstraintMode.CONSTRAINT))
+  private Office office;
 
-  @Column(name = "id_sucursal")
-  private int id_office;
+  @ManyToOne()
+  @JoinColumn(name = "id_area", foreignKey = @ForeignKey(name = "fk_employee_area", value = ConstraintMode.CONSTRAINT))
+  private Area area;
 
-  public int getId_area() {
-    return id_area;
+  public Office getOffice() {
+    return office;
   }
 
-  public void setId_area(int id_area) {
-    this.id_area = id_area;
+  public void setOffice(Office office) {
+    this.office = office;
   }
 
-  public int getId_office() {
-    return id_office;
+  public Area getArea() {
+    return area;
   }
 
-  public void setId_office(int id_office) {
-    this.id_office = id_office;
+  public void setArea(Area area) {
+    this.area = area;
   }
 }
