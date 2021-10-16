@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,8 +21,14 @@ public class UserService {
   public ArrayList<User> getAllUsers(){
     return (ArrayList<User>) iUserRepository.findAll();
   }
-
+  
   public ArrayList<Rol> getRoles(Integer id){
     return iUserRepository.findByRoles(id);
   }
+  
+  public Optional<User> getUser (Integer id){
+    return iUserRepository.findById(id);
+  }
+
 }
+
