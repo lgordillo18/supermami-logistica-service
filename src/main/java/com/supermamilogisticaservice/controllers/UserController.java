@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.TableGenerator;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/logistica-service")
@@ -15,7 +17,7 @@ public class UserController {
   private UserService userService;
 
   @PostMapping("/user")
-  public User createStudent(@Validated @RequestBody User user) {
+  public User createUser(@Validated @RequestBody User user) {
     return userService.saveUser(user);
   }
 
@@ -23,5 +25,8 @@ public class UserController {
   public ArrayList<User> getAllUsers(){
     return userService.getAllUsers();
   }
+
+  @GetMapping(path = "/{id}")
+  public Optional<User> getUser(@PathVariable("id") Integer id) {return this.userService.getUser(id);}
 
 }
