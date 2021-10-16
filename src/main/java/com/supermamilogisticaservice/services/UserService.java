@@ -1,5 +1,6 @@
 package com.supermamilogisticaservice.services;
 
+import com.supermamilogisticaservice.models.Rol;
 import com.supermamilogisticaservice.models.User;
 import com.supermamilogisticaservice.repositories.IUserRepository;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,11 @@ public class UserService {
   public ArrayList<User> getAllUsers(){
     return (ArrayList<User>) iUserRepository.findAll();
   }
-
+  
+  public ArrayList<Rol> getRoles(Integer id){
+    return iUserRepository.findByRoles(id);
+  }
+  
   public Optional<User> getUser (Integer id){
     return iUserRepository.findById(id);
   }

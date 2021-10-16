@@ -1,5 +1,6 @@
 package com.supermamilogisticaservice.controllers;
 
+import com.supermamilogisticaservice.models.Rol;
 import com.supermamilogisticaservice.models.User;
 import com.supermamilogisticaservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,12 @@ public class UserController {
     return userService.getAllUsers();
   }
 
+  @GetMapping(path = "/{roleId}")
+  public ArrayList<Rol> getRoles(@PathVariable("roleId") Integer id){ return this.userService.getRoles(id);
+  }
+
   @GetMapping(path = "/{id}")
   public Optional<User> getUser(@PathVariable("id") Integer id) {return this.userService.getUser(id);}
+
 
 }
