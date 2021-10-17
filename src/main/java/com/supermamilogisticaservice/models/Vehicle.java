@@ -1,11 +1,5 @@
 package com.supermamilogisticaservice.models;
-
-
-
-
 import javax.persistence.*;
-import java.io.Serializable;
-
 
 @Entity(name = "Vehicle")
 @Table(name = "\"Vehiculos\"", schema = "public")
@@ -21,11 +15,11 @@ public class Vehicle {
 
     @ManyToOne()
     @JoinColumn(name = "id_marca", foreignKey = @ForeignKey(name = "fk_employee_Vehicle_brand", value = ConstraintMode.CONSTRAINT))
-    private Vehicle_brand vehicle_brand;
+    private VehicleBrand vehicle_brand;
 
     @ManyToOne()
     @JoinColumn(name = "id_modelo", foreignKey = @ForeignKey(name = "fk_employee_Vehicle_model", value = ConstraintMode.CONSTRAINT))
-    private Vehicle_model vehicle_model;
+    private VehicleModel vehicle_model;
 
     @Column(name = "año")
     private int year;
@@ -35,7 +29,7 @@ public class Vehicle {
 
     @ManyToOne()
     @JoinColumn(name = "id_estado", foreignKey = @ForeignKey(name = "fk_employee_Vehicle_status", value = ConstraintMode.CONSTRAINT))
-    private Vehicle_status vehicle_status;
+    private VehicleStatus vehicle_status;
 
     public int getId() {
         return id;
@@ -53,19 +47,19 @@ public class Vehicle {
         this.patent = patent;
     }
 
-    public Vehicle_brand getVehicle_brand() {
+    public VehicleBrand getVehicle_brand() {
         return vehicle_brand;
     }
 
-    public void setVehicle_brand(Vehicle_brand vehicle_brand) {
+    public void setVehicle_brand(VehicleBrand vehicle_brand) {
         this.vehicle_brand = vehicle_brand;
     }
 
-    public Vehicle_model getVehicle_model() {
+    public VehicleModel getVehicle_model() {
         return vehicle_model;
     }
 
-    public void setVehicle_model(Vehicle_model vehicle_model) {
+    public void setVehicle_model(VehicleModel vehicle_model) {
         this.vehicle_model = vehicle_model;
     }
 
@@ -85,11 +79,11 @@ public class Vehicle {
         this.kg = kg;
     }
 
-    public Vehicle_status getVehicle_status() {
+    public VehicleStatus getVehicle_status() {
         return vehicle_status;
     }
 
-    public void setVehicle_status(Vehicle_status vehicle_status) {
+    public void setVehicle_status(VehicleStatus vehicle_status) {
         this.vehicle_status = vehicle_status;
     }
 }

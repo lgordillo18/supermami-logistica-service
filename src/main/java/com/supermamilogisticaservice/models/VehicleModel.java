@@ -3,10 +3,10 @@ package com.supermamilogisticaservice.models;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "Vehicle_status")
-@Table(name = "\"Estado_vehiculos\"", schema = "public")
+@Entity(name = "VehicleModel")
+@Table(name = "\"ModeloVehiculos\"", schema = "public")
 
-public class Vehicle_status {
+public class VehicleModel {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +15,7 @@ public class Vehicle_status {
     @Column(name = "nombre", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "vehicle_status", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "vehicle_model", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles;
 
     public int getId() {
