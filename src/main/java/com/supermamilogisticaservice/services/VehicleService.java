@@ -14,7 +14,7 @@ public class VehicleService {
     public Vehicle saveVehicle(Vehicle vehicle) {
         return iVehicleRepository.save(vehicle);
     }
-    public ArrayList<Vehicles> getAllVehicles(){
+    public ArrayList<Vehicle> getAllVehicles(){
         return (ArrayList<Vehicle>) iVehicleRepository.findAll();
     }
 }

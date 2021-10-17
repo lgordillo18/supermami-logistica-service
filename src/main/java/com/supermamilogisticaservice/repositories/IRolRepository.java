@@ -1,10 +1,10 @@
 package com.supermamilogisticaservice.repositories;
 
 import com.supermamilogisticaservice.models.Rol;
-import com.supermamilogisticaservice.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 
-public interface IUserRepository extends JpaRepository<User, Integer> {
+@Repository
+public interface IRolRepository extends JpaRepository<Rol, Integer> {
 }

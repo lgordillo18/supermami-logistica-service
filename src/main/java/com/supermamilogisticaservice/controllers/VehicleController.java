@@ -1,6 +1,6 @@
 package com.supermamilogisticaservice.controllers;
 
-import com.supermamilogisticaservice.models.User;
+import com.supermamilogisticaservice.models.Vehicle;
 import com.supermamilogisticaservice.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -17,9 +17,9 @@ public class VehicleController {
 
     @PostMapping("/vehicle")
     public Vehicle createVehicle(@Validated @RequestBody Vehicle vehicle) {
-        return vehicleService.saveVehicle(Vehicle);
+        return vehicleService.saveVehicle(vehicle);
     }
 
     @GetMapping("/vehicles")
-    public ArrayList<Vehicles> getAllVehicles(){return vehicleService.getAllVehicles(); }
+    public ArrayList<Vehicle> getAllVehicles(){return vehicleService.getAllVehicles(); }
 }
