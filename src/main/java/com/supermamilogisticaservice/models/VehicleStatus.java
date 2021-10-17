@@ -1,14 +1,12 @@
 package com.supermamilogisticaservice.models;
 
-
 import javax.persistence.*;
 import java.util.List;
 
+@Entity(name = "VehicleStatus")
+@Table(name = "\"EstadoVehiculos\"", schema = "public")
 
-@Entity(name = "Vehicle_brand")
-@Table(name = "\"Marca_vehiculos\"", schema = "public")
-
-public class Vehicle_brand {
+public class VehicleStatus {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +15,7 @@ public class Vehicle_brand {
     @Column(name = "nombre", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "vehicle_brand", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "vehicle_status", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles;
 
     public int getId() {
