@@ -32,6 +32,11 @@ public class UserController {
     return userService.getAllRoles();
   }
 
-  @GetMapping(path = "/{id}")
+  @GetMapping(path = "/user/{id}")
   public Optional<User> getUser(@PathVariable("id") Integer id) {return this.userService.getUser(id);}
+
+  @PutMapping("/user/{id}")
+  public User updateUser(@PathVariable String id, @Validated @RequestBody User user) {
+    return userService.saveUser(user);
+  }
 }
