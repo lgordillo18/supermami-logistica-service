@@ -17,14 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 public class UserTests {
     @Test
-    void aEnsureUsersAPIRequestWorks() throws Exception {
+    void EnsureUsersAPIRequestWorks() throws Exception {
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/api/logistica-service/users")).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertThat(response.statusCode()).isEqualTo(200);
     }
     @Test
-    void bEnsureUserAPIRequestWorks() throws Exception {
+    void EnsureUserAPIRequestWorks() throws Exception {
         User userToPost = new User();
         HttpClient client = HttpClient.newBuilder().build();
 
@@ -48,7 +48,7 @@ public class UserTests {
         assertThat(response.statusCode()).isEqualTo(200);
     }
     @Test
-    void cEnsureUsersAPIRequestWorksJSON() throws Exception {
+    void EnsureUsersAPIRequestWorksJSON() throws Exception {
         User userToPost = new User();
         HttpClient client = HttpClient.newBuilder().build();
 
