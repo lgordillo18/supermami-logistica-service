@@ -72,5 +72,6 @@ public class UserTests {
         String body = response.body();
         System.out.println(body);
         assertTrue(body.contains("last_name\":\"Testerino\""));
+        assertTrue(body.contains("first_name\":\"Test\""));
     }
 }
