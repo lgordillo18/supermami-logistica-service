@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/logistica-service")
 public class UserController {
@@ -41,7 +42,6 @@ public class UserController {
     }
   }
 
-  @CrossOrigin
   @GetMapping("/user/roles")
   public ResponseEntity<ArrayList<RolDto>> getAllRoles() {
     ArrayList<RolDto> roles = new ArrayList<RolDto>();
