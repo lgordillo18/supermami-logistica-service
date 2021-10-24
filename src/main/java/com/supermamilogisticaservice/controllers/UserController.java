@@ -41,6 +41,7 @@ public class UserController {
     }
   }
 
+  @CrossOrigin
   @GetMapping("/user/roles")
   public ResponseEntity<ArrayList<RolDto>> getAllRoles() {
     ArrayList<RolDto> roles = new ArrayList<RolDto>();
