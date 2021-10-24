@@ -11,7 +11,8 @@ public class OfficeService {
     @Autowired
     private IOfficeRepository iOfficeRepository;
     public Office saveOffice(Office office){
-        return  iOfficeRepository.save(office);
+        return iOfficeRepository.save(office);
     }
+    public void deleteOffice(int id) { iOfficeRepository.deleteById(id); }
 }
 

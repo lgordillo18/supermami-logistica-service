@@ -18,6 +18,11 @@ public class OfficeController {
     public Office createOffice(@Validated @RequestBody Office office) {
         return officeService.saveOffice(office);
     }
+
+    @DeleteMapping("/office/{id}")
+    public void deleteOffice(@PathVariable int id) {
+        officeService.deleteOffice(id);
+    }
 }
 
 
