@@ -18,7 +18,7 @@ public class Office {
     private int id; // Es una propiedad y tiene que ir en ingles
 
     @Column(name = "nombre", nullable = false) // nombre de la columna y debe ser en español
-    private String nombre; // Es una propiedad y tiene que ir en ingles
+    private String name; // Es una propiedad y tiene que ir en ingles
 
     @OneToMany(mappedBy = "office", cascade = CascadeType.ALL, orphanRemoval = true) // mappedBy: Hace referencia a la propiedad de la clase Employee
     private List<Employee> employees;
@@ -42,12 +42,12 @@ public class Office {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Employee> getEmployees() {

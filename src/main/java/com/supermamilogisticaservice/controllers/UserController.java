@@ -1,13 +1,16 @@
 package com.supermamilogisticaservice.controllers;
 
+import com.supermamilogisticaservice.dtos.RolDto;
+import com.supermamilogisticaservice.dtos.UserDto;
 import com.supermamilogisticaservice.models.Rol;
 import com.supermamilogisticaservice.models.User;
 import com.supermamilogisticaservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.TableGenerator;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -23,13 +26,35 @@ public class UserController {
   }
 
   @GetMapping("/users")
-  public ArrayList<User> getAllUsers(){
-    return userService.getAllUsers();
+  public ResponseEntity<ArrayList<UserDto>> getAllUsers() {
+    ArrayList<UserDto> users = new ArrayList<UserDto>();
+    try {
+      Iterable<User> arrayUsers = userService.getAllUsers();
+      for (User user: arrayUsers) {
+        UserDto newUserDto = new UserDto(user.getId(), user.getFirst_name(), user.getLast_name(), user.getRol().getName());
+        users.add(newUserDto);
+      }
+      return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    catch ( Exception e ) {
+      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  @GetMapping("/users/roles")
-  public ArrayList<Rol> getAllRoles(){
-    return userService.getAllRoles();
+  @GetMapping("/user/roles")
+  public ResponseEntity<ArrayList<RolDto>> getAllRoles() {
+    ArrayList<RolDto> roles = new ArrayList<RolDto>();
+    try {
+      Iterable<Rol> arrayRoles = userService.getAllRoles();
+      for (Rol rol: arrayRoles) {
+        RolDto newRolDto = new RolDto(rol.getId(), rol.getName());
+        roles.add(newRolDto);
+      }
+      return new ResponseEntity<>(roles, HttpStatus.OK);
+    }
+    catch ( Exception e ) {
+      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @GetMapping(path = "/user/{id}")
