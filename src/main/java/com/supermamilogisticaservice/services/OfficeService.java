@@ -15,11 +15,13 @@ public class OfficeService {
     private IOfficeRepository iOfficeRepository;
 
     public Office saveOffice(Office office){
-        return  iOfficeRepository.save(office);
+        return iOfficeRepository.save(office);
     }
 
     public ArrayList<Office> getAllOffices(){
         return (ArrayList<Office>) iOfficeRepository.findAll();
     }
+  
+    public void deleteOffice(int id) { iOfficeRepository.deleteById(id); }
 }
 

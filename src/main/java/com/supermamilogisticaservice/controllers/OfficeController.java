@@ -37,6 +37,11 @@ public class OfficeController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+  
+    @DeleteMapping("/office/{id}")
+    public void deleteOffice(@PathVariable int id) {
+        officeService.deleteOffice(id);
+    }
 }
 
 
