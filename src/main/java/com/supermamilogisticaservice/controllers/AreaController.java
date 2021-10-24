@@ -6,12 +6,14 @@ import com.supermamilogisticaservice.services.AreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/logistica-service")
 public class AreaController {
@@ -19,7 +21,7 @@ public class AreaController {
     AreaService areaService;
 
     @GetMapping("/areas")
-    public ResponseEntity<ArrayList<AreaDto>> getAllAreas() {
+    public ResponseEntity getAllAreas() {
         ArrayList<AreaDto> areas = new ArrayList<AreaDto>();
         try {
             Iterable<Area> arrayAreas = areaService.getAllAreas();
@@ -30,7 +32,7 @@ public class AreaController {
             return new ResponseEntity<>(areas, HttpStatus.OK);
         }
         catch ( Exception e ) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
         }
     }
 }

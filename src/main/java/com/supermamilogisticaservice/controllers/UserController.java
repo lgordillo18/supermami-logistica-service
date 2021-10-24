@@ -1,7 +1,9 @@
 package com.supermamilogisticaservice.controllers;
 
+import com.supermamilogisticaservice.dtos.AreaDto;
 import com.supermamilogisticaservice.dtos.RolDto;
 import com.supermamilogisticaservice.dtos.UserDto;
+import com.supermamilogisticaservice.models.Area;
 import com.supermamilogisticaservice.models.Rol;
 import com.supermamilogisticaservice.models.User;
 import com.supermamilogisticaservice.services.UserService;
@@ -22,12 +24,17 @@ public class UserController {
   private UserService userService;
 
   @PostMapping("/user")
-  public User createUser(@Validated @RequestBody User user) {
-    return userService.saveUser(user);
+  public ResponseEntity createUser(@Validated @RequestBody User user) {
+      try {
+        User newUser = userService.saveUser(user);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+      } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
+      }
   }
 
   @GetMapping("/users")
-  public ResponseEntity<ArrayList<UserDto>> getAllUsers() {
+  public ResponseEntity getAllUsers() {
     ArrayList<UserDto> users = new ArrayList<UserDto>();
     try {
       Iterable<User> arrayUsers = userService.getAllUsers();
@@ -38,13 +45,12 @@ public class UserController {
       return new ResponseEntity<>(users, HttpStatus.OK);
     }
     catch ( Exception e ) {
-      System.out.println(e);
-      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
     }
   }
 
   @GetMapping("/user/roles")
-  public ResponseEntity<ArrayList<RolDto>> getAllRoles() {
+  public ResponseEntity getAllRoles() {
     ArrayList<RolDto> roles = new ArrayList<RolDto>();
     try {
       Iterable<Rol> arrayRoles = userService.getAllRoles();
@@ -55,7 +61,7 @@ public class UserController {
       return new ResponseEntity<>(roles, HttpStatus.OK);
     }
     catch ( Exception e ) {
-      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
     }
   }
 

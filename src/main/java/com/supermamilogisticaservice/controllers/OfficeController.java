@@ -2,6 +2,7 @@ package com.supermamilogisticaservice.controllers;
 
 import com.supermamilogisticaservice.dtos.OfficeDto;
 import com.supermamilogisticaservice.models.Office;
+import com.supermamilogisticaservice.models.User;
 import com.supermamilogisticaservice.services.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/logistica-service")
 public class OfficeController {
@@ -18,12 +20,17 @@ public class OfficeController {
     private OfficeService officeService;
 
     @PostMapping("/office")
-    public Office createOffice(@Validated @RequestBody Office office) {
-        return officeService.saveOffice(office);
+    public ResponseEntity createOffice(@Validated @RequestBody Office office) {
+        try {
+            Office newOffice = officeService.saveOffice(office);
+            return new ResponseEntity<>(newOffice, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
+        }
     }
 
     @GetMapping("/offices")
-    public ResponseEntity<ArrayList<OfficeDto>> getAllOffices() {
+    public ResponseEntity getAllOffices() {
         ArrayList<OfficeDto> offices = new ArrayList<OfficeDto>();
         try {
             Iterable<Office> arrayOffices = officeService.getAllOffices();
@@ -34,7 +41,7 @@ public class OfficeController {
             return new ResponseEntity<>(offices, HttpStatus.OK);
         }
         catch ( Exception e ) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
         }
     }
   
