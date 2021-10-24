@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/logistica-service")
 public class VehicleController {
@@ -24,7 +24,7 @@ public class VehicleController {
     }
 
     @GetMapping("/vehicles")
-    public ResponseEntity<ArrayList<VehicleDto>> getAllVehicles() {
+    public ResponseEntity getAllVehicles() {
         ArrayList<VehicleDto> vehicles = new ArrayList<VehicleDto>();
         try {
             Iterable<Vehicle> arrayVehicles = vehicleService.getAllVehicles();
@@ -35,7 +35,7 @@ public class VehicleController {
             return new ResponseEntity<>(vehicles, HttpStatus.OK);
         }
         catch ( Exception e ) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
         }
     }
 }
