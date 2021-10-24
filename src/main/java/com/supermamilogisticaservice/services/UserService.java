@@ -14,6 +14,7 @@ import java.util.Optional;
 public class UserService {
   @Autowired
   private IUserRepository iUserRepository;
+  @Autowired
   private IRolRepository iRolRepository;
 
   public User saveUser(User user) {
@@ -31,6 +32,5 @@ public class UserService {
   public Optional<User> getUser (Integer id){
     return iUserRepository.findById(id);
   }
-
 }
 
