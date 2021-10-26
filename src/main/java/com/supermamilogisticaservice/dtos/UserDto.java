@@ -1,20 +1,20 @@
 package com.supermamilogisticaservice.dtos;
 
-import java.util.Locale;
-
 public class UserDto {
   private int id;
   private String first_name;
   private String last_name;
   private String full_name;
   private String rol;
+  private String username;
 
-  public UserDto(int id, String first_name, String last_name, String rol) {
+  public UserDto(int id, String first_name, String last_name, String rol, String username) {
     this.id = id;
     this.first_name = first_name;
     this.last_name = last_name;
     this.full_name = first_name + " " + last_name;
     this.rol = rol;
+    this.username = username;
   }
 
   public int getId() {
@@ -55,5 +55,13 @@ public class UserDto {
 
   public void setRol(String rol) {
     this.rol = rol;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 }
