@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/logistica-service")
+@RequestMapping("/logistica-service")
 public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
