@@ -29,7 +29,7 @@ public class UserController {
         User newUser = userService.saveUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
       } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
       }
   }
 
