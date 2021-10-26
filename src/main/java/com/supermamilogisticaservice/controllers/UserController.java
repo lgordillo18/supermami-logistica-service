@@ -45,7 +45,7 @@ public class UserController {
       return new ResponseEntity<>(users, HttpStatus.OK);
     }
     catch ( Exception e ) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
     }
   }
 
