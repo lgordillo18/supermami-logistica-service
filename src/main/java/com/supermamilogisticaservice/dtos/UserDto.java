@@ -7,14 +7,24 @@ public class UserDto {
   private String full_name;
   private String rol;
   private String username;
+  private boolean deleted;
 
-  public UserDto(int id, String first_name, String last_name, String rol, String username) {
+  public UserDto(int id, String first_name, String last_name, String rol, String username, boolean deleted) {
     this.id = id;
     this.first_name = first_name;
     this.last_name = last_name;
     this.full_name = first_name + " " + last_name;
     this.rol = rol;
     this.username = username;
+    this.deleted = deleted;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
   }
 
   public int getId() {
