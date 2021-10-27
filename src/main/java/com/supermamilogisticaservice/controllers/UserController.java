@@ -2,6 +2,7 @@ package com.supermamilogisticaservice.controllers;
 
 import com.supermamilogisticaservice.dtos.AreaDto;
 import com.supermamilogisticaservice.dtos.RolDto;
+import com.supermamilogisticaservice.dtos.UserCompleteDto;
 import com.supermamilogisticaservice.dtos.UserDto;
 import com.supermamilogisticaservice.models.Area;
 import com.supermamilogisticaservice.models.Rol;
@@ -61,12 +62,25 @@ public class UserController {
       return new ResponseEntity<>(roles, HttpStatus.OK);
     }
     catch ( Exception e ) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
     }
   }
 
   @GetMapping(path = "/user/{id}")
-  public Optional<User> getUser(@PathVariable("id") Integer id) {return this.userService.getUser(id);}
+  public ResponseEntity getUser(@PathVariable("id") int id) {
+    try {
+      Optional<User> userData = userService.getUser(id);
+      if (userData.isPresent()) {
+        UserCompleteDto newUserDto = new UserCompleteDto(userData.get().getId(), userData.get().getFirst_name(), userData.get().getLast_name(), userData.get().getUsername(), userData.get().getDni(), userData.get().getPhone_number(), userData.get().getEmail(), userData.get().getAddress(), userData.get().getOffice(), userData.get().getRol(), userData.get().getArea());
+        return new ResponseEntity<>(newUserDto, HttpStatus.OK);
+      }
+
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    catch ( Exception e ) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
+    }
+  }
 
   @PutMapping("/user/{id}")
   public User updateUser(@PathVariable String id, @Validated @RequestBody User user) {
