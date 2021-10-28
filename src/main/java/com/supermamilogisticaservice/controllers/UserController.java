@@ -95,7 +95,7 @@ public class UserController {
         User _user = userData.get();
         _user.setDeleted(user.isDeleted());
         userService.saveUser(_user);
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>(userData, HttpStatus.OK);
       } else {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
