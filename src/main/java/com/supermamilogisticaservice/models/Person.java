@@ -12,13 +12,13 @@ public class Person {
   @Column(name = "id", nullable = false)
   private int id;
 
-  @Column(name = "nombre", nullable = false)
+  @Column(name = "nombre")
   private String first_name;
 
-  @Column(name = "apellido", nullable = false)
+  @Column(name = "apellido")
   private String last_name;
 
-  @Column(name = "dni", nullable = false)
+  @Column(name = "dni")
   private String dni;
 
   @Column(name = "telefono")

@@ -1,20 +1,30 @@
 package com.supermamilogisticaservice.models;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "Rol")
 @Table(name = "\"Roles\"", schema = "public")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Rol {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre")
     private String name;
 
     @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users;
+
+    public Rol(Integer id, String name) {
+    }
 
     public int getId() {
         return id;
