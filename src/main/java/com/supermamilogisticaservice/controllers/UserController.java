@@ -1,10 +1,8 @@
 package com.supermamilogisticaservice.controllers;
 
-import com.supermamilogisticaservice.dtos.AreaDto;
 import com.supermamilogisticaservice.dtos.RolDto;
 import com.supermamilogisticaservice.dtos.UserCompleteDto;
 import com.supermamilogisticaservice.dtos.UserDto;
-import com.supermamilogisticaservice.models.Area;
 import com.supermamilogisticaservice.models.Rol;
 import com.supermamilogisticaservice.models.User;
 import com.supermamilogisticaservice.services.UserService;
