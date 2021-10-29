@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity(name = "Employee")
 @Table(name = "\"Empleados\"", schema = "public")
-@OnDelete(action = OnDeleteAction.CASCADE)
+// @OnDelete(action = OnDeleteAction.NO_ACTION)
 @PrimaryKeyJoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_employee_person"))
 public class Employee extends Person implements Serializable {
   private static final long serialVersionUID = 1L;

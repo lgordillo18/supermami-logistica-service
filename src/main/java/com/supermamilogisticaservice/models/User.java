@@ -4,7 +4,6 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.repository.cdi.Eager;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,8 +26,8 @@ public class User extends Employee implements Serializable {
     @JoinColumn(name = "id_rol", foreignKey = @ForeignKey(name = "fk_employee_rol", value = ConstraintMode.CONSTRAINT))
     private Collection<Rol> rol = new ArrayList<>();
 
-    @Column(name = "activo", nullable = false)
-    private boolean active = true;
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = Boolean.FALSE;
 
     public User(String username, String password, Collection<Rol> rol) {
         this.username = username;
@@ -64,11 +63,11 @@ public class User extends Employee implements Serializable {
         this.rol = rol;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

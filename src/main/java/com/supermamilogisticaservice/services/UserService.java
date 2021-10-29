@@ -89,5 +89,8 @@ public class UserService implements IUserService, UserDetailsService {
     return userRepo.findById(id);
   }
 
+  public void deleteUser (int id) {
+    iUserRepository.deleteById(id);
+  }
 }
 
