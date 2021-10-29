@@ -15,7 +15,7 @@ public class VehicleStatus {
     @Column(name = "nombre", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "vehicle_status", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "vehicleStatus", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles;
 
     public int getId() {

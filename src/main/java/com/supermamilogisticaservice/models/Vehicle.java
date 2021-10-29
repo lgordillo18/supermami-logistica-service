@@ -13,13 +13,11 @@ public class Vehicle {
     @Column(name = "patente", nullable = false)
     private String patent;
 
-    @ManyToOne()
-    @JoinColumn(name = "id_marca", foreignKey = @ForeignKey(name = "fk_employee_Vehicle_brand", value = ConstraintMode.CONSTRAINT))
-    private VehicleBrand vehicle_brand;
+    @Column(name = "vehiculo_marca", nullable = false)
+    private String vehicleBrand;
 
-    @ManyToOne()
-    @JoinColumn(name = "id_modelo", foreignKey = @ForeignKey(name = "fk_employee_Vehicle_model", value = ConstraintMode.CONSTRAINT))
-    private VehicleModel vehicle_model;
+    @Column(name = "vehiculo_modelo", nullable = false)
+    private String vehicleModel;
 
     @Column(name = "año")
     private int year;
@@ -28,8 +26,15 @@ public class Vehicle {
     private int kg;
 
     @ManyToOne()
-    @JoinColumn(name = "id_estado", foreignKey = @ForeignKey(name = "fk_employee_Vehicle_status", value = ConstraintMode.CONSTRAINT))
-    private VehicleStatus vehicle_status;
+    @JoinColumn(name = "id_estado", foreignKey = @ForeignKey(name = "fk_employee_VehicleStatus", value = ConstraintMode.CONSTRAINT))
+    private VehicleStatus vehicleStatus;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name="employee_id")
+    private Employee employee;
+
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = Boolean.FALSE;
 
     public int getId() {
         return id;
@@ -47,20 +52,20 @@ public class Vehicle {
         this.patent = patent;
     }
 
-    public VehicleBrand getVehicle_brand() {
-        return vehicle_brand;
+    public String getVehicleBrand() {
+        return vehicleBrand;
     }
 
-    public void setVehicle_brand(VehicleBrand vehicle_brand) {
-        this.vehicle_brand = vehicle_brand;
+    public void setVehicleBrand(String vehicleBrand) {
+        this.vehicleBrand = vehicleBrand;
     }
 
-    public VehicleModel getVehicle_model() {
-        return vehicle_model;
+    public String getVehicleModel() {
+        return vehicleModel;
     }
 
-    public void setVehicle_model(VehicleModel vehicle_model) {
-        this.vehicle_model = vehicle_model;
+    public void setVehicleModel(String vehicleModel) {
+        this.vehicleModel = vehicleModel;
     }
 
     public int getYear() {
@@ -79,11 +84,27 @@ public class Vehicle {
         this.kg = kg;
     }
 
-    public VehicleStatus getVehicle_status() {
-        return vehicle_status;
+    public VehicleStatus getVehicleStatus() {
+        return vehicleStatus;
     }
 
-    public void setVehicle_status(VehicleStatus vehicle_status) {
-        this.vehicle_status = vehicle_status;
+    public void setVehicleStatus(VehicleStatus vehicleStatus) {
+        this.vehicleStatus = vehicleStatus;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

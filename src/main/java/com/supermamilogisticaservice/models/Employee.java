@@ -37,4 +37,5 @@ public class Employee extends Person implements Serializable {
   public void setArea(Area area) {
     this.area = area;
   }
+
 }
