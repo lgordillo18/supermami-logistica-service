@@ -2,6 +2,7 @@ package com.supermamilogisticaservice.models;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.hibernate.criterion.Order;
 
 import javax.persistence.*; // Hibernate
 import java.util.List;
