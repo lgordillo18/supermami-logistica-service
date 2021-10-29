@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class OfficeService {
@@ -23,5 +24,9 @@ public class OfficeService {
     }
   
     public void deleteOffice(int id) { iOfficeRepository.deleteById(id); }
+
+    public Optional<Office> getOffice (Integer id){
+        return iOfficeRepository.findById(id);
+    }
 }
 
