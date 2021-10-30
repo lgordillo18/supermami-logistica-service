@@ -1,5 +1,7 @@
 package com.supermamilogisticaservice.services;
 
+import com.supermamilogisticaservice.models.Employee;
+import com.supermamilogisticaservice.models.OrderTicket;
 import com.supermamilogisticaservice.models.Rol;
 import com.supermamilogisticaservice.models.User;
 import com.supermamilogisticaservice.repositories.IRolRepository;
@@ -28,6 +30,10 @@ public class UserService {
   public ArrayList<Rol> getAllRoles(){
     return (ArrayList<Rol>) iRolRepository.findAll();
   }
+
+  public Optional<Rol> getRol (Integer id){
+    return iRolRepository.findById(id);
+  }
   
   public Optional<User> getUser (Integer id){
     return iUserRepository.findById(id);
@@ -35,6 +41,10 @@ public class UserService {
 
   public void deleteUser (int id) {
     iUserRepository.deleteById(id);
+  }
+
+  public ArrayList<User> getUsersByRol(Optional<Rol> rol) {
+    return (ArrayList<User>) iUserRepository.findByRol(rol);
   }
 }
 
