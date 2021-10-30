@@ -1,10 +1,10 @@
-package com.supermamilogisticaservice.util;
+package com.supermamilogisticaservice.utils;
 
 import com.supermamilogisticaservice.exceptions.InvalidFilterInformation;
 
 import java.util.Map;
 
-public class Validator {
+public class validator {
     public static boolean validFilters(Map<String, String> filters) {
         if (filters.size() == 0) return true;
 
@@ -47,7 +47,7 @@ public class Validator {
         String regex = "^(?=\\w\\d)(?=\\w[A-Z])(?=\\w*[a-z])\\S{8,16}$";
         return pass.matches(regex);
     }
-    
+
     public static boolean isNumeric(String strNum) {
         try {
             double d = Double.parseDouble(strNum);
@@ -57,13 +57,4 @@ public class Validator {
         }
         return true;
     }
-
-
-
-
-
-
-
-
-
 }

@@ -1,11 +1,11 @@
-package com.supermamilogisticaservice.util;
+package com.supermamilogisticaservice.utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateUtils {
+public class dateUtils {
     public static String DATE_FORMAT = "yyyy-MM-dd";
 
     public static Date getDateFromString(String date)
