@@ -5,10 +5,11 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity(name = "Employee")
 @Table(name = "\"Empleados\"", schema = "public")
-@OnDelete(action = OnDeleteAction.CASCADE)
+// @OnDelete(action = OnDeleteAction.NO_ACTION)
 @PrimaryKeyJoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_employee_person"))
 public class Employee extends Person implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -36,4 +37,5 @@ public class Employee extends Person implements Serializable {
   public void setArea(Area area) {
     this.area = area;
   }
+
 }
