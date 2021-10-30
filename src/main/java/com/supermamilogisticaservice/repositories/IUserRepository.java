@@ -12,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface IUserRepository extends JpaRepository<User, Integer> {
   List<User> findByRol(Optional<Rol> rol);
-  public abstract ArrayList<Rol> findByRoles(Integer id);
+
 }
