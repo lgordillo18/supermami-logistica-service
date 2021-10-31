@@ -1,46 +1,54 @@
 package com.supermamilogisticaservice.controllers;
 
-import com.supermamilogisticaservice.dtos.AreaDto;
-import com.supermamilogisticaservice.models.Area;
+import com.supermamilogisticaservice.dtos.OfficeDto;
 import com.supermamilogisticaservice.models.Office;
+import com.supermamilogisticaservice.models.User;
 import com.supermamilogisticaservice.services.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @CrossOrigin
-
 @RestController
-
-@RequestMapping("/api/logistica-service/office")
+@RequestMapping("/api/logistica-service")
 public class OfficeController {
-
     @Autowired
-    OfficeService officeService;
+    private OfficeService officeService;
+
+    @PostMapping("/office")
+    public ResponseEntity createOffice(@Validated @RequestBody Office office) {
+        try {
+            Office newOffice = officeService.saveOffice(office);
+            return new ResponseEntity<>(newOffice, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
+        }
+    }
 
     @GetMapping("/offices")
-    private List<Office> getAllOffices(){
-        return officeService.getAllOffices();
+    public ResponseEntity getAllOffices() {
+        ArrayList<OfficeDto> offices = new ArrayList<OfficeDto>();
+        try {
+            Iterable<Office> arrayOffices = officeService.getAllOffices();
+            for (Office office: arrayOffices) {
+                OfficeDto newOfficeDto = new OfficeDto(office.getId(), office.getName());
+                offices.add(newOfficeDto);
+            }
+            return new ResponseEntity<>(offices, HttpStatus.OK);
+        }
+        catch ( Exception e ) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error Message");
+        }
     }
-
-    @PutMapping("/update")
-    private Office update(@RequestBody Office office){
-        officeService.saveOffice(office);
-        return office;
-    }
-
-    @PostMapping("/save")
-    private int save(@RequestBody Office office){
-        officeService.saveOffice(office);
-        return office.getId();
-    }
-
-    @DeleteMapping("/delete/{id}")
-    private void deleteOffice(@PathVariable("id") int officeId){
-        officeService.deleteOffice(officeId);
+  
+    @DeleteMapping("/office/{id}")
+    public void deleteOffice(@PathVariable int id) {
+        officeService.deleteOffice(id);
     }
 }
+
+

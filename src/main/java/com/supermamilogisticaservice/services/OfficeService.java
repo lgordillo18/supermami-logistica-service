@@ -9,15 +9,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.stream.DoubleStream;
 
 @Service
 public class OfficeService {
     @Autowired
     private IOfficeRepository iOfficeRepository;
 
-    public void saveOffice(Office office){
-         iOfficeRepository.save(office);
+    public Office saveOffice(Office office){
+        return iOfficeRepository.save(office);
     }
 
     public ArrayList<Office> getAllOffices(){
