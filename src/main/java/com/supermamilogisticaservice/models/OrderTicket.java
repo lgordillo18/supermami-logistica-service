@@ -18,7 +18,8 @@ public class OrderTicket implements Serializable {
   @Column(name = "fecha")
   private java.util.Date date = new Date();
 
-  @OneToMany(mappedBy = "order_ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "pedido_id")
   private List<OrderTicketDetail> order_ticket_details;
 
   @ManyToOne(optional = false)
