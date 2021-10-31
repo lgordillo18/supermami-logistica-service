@@ -49,6 +49,11 @@ public class OfficeController {
     public void deleteOffice(@PathVariable int id) {
         officeService.deleteOffice(id);
     }
+
+    @PutMapping("/updateOffice/{id}")
+    public Office updateOffice(@PathVariable String id, @Validated @RequestBody Office office) {
+        return officeService.saveOffice(office);
+    }
 }
 
 
