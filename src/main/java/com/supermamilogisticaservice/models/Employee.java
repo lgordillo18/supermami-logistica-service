@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "Employee")
 @Table(name = "\"Empleados\"", schema = "public")
@@ -38,4 +39,11 @@ public class Employee extends Person implements Serializable {
     this.area = area;
   }
 
+  @Override
+  public boolean equals(Object o){
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Employee that = (Employee) o;
+    return Objects.equals(serialVersionUID, that.serialVersionUID);
+  }
 }
