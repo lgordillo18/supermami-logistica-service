@@ -16,7 +16,7 @@ public class OrderTicketFullDetailDto {
   public OrderTicketFullDetailDto(int id, String date, String employee_first_name, String employee_last_name, String office_name, TicketStatus ticket_status, List<OrderTicketDetail> ticket_details) {
     this.id = id;
     this.date = date;
-    this.employee_name = employee_first_name.substring(0, 1).toUpperCase() + employee_first_name.substring(1) + " " + employee_last_name.substring(0, 1).toUpperCase() + employee_last_name.substring(1);
+    this.employee_name = employee_first_name + " " + employee_last_name;
     this.office_name = office_name;
     this.ticket_status = ticket_status;
     this.ticket_details = ticket_details;
