@@ -37,6 +37,20 @@ public class OrderTicketController {
     }
   }
 
+  @GetMapping("/order-ticket/{id}")
+  public ResponseEntity getOrderTicket(@PathVariable("id") int id) {
+    try {
+      Optional<OrderTicket> orderTicketData = orderTicketService.getOrderTicket(id);
+      if (orderTicketData.isPresent()) {
+        OrderTicketFullDetailDto order_ticket = new OrderTicketFullDetailDto(orderTicketData.get().getId(), orderTicketData.get().getDate().toString(), orderTicketData.get().getEmployee().getFirst_name(), orderTicketData.get().getEmployee().getLast_name(), orderTicketData.get().getOffice().getName(), orderTicketData.get().getTicket_status(), orderTicketData.get().getOrder_ticket_details());
+        return new ResponseEntity<>(order_ticket, HttpStatus.OK);
+      }
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    } catch ( Exception e ) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
+    }
+  }
+
   // Orden de pedido sin filtros (para rol admin)
   @GetMapping("/order-tickets")
   public ResponseEntity getAllOrderTickets() {
