@@ -34,6 +34,14 @@ public class OrderTicket implements Serializable {
   @JoinColumn(name="ticket_status_id")
   private TicketStatus ticket_status;
 
+  @ManyToOne()
+  @JoinColumn(name="rejected_reason_id")
+  private RejectedReason rejected_reason;
+
+  @ManyToOne()
+  @JoinColumn(name="cancelled_reason_id")
+  private CancelledReason cancelled_reason;
+
   public TicketStatus getTicket_status() {
     return ticket_status;
   }
@@ -80,5 +88,21 @@ public class OrderTicket implements Serializable {
 
   public void setOrder_ticket_details(List<OrderTicketDetail> order_ticket_details) {
     this.order_ticket_details = order_ticket_details;
+  }
+
+  public RejectedReason getRejected_reason() {
+    return rejected_reason;
+  }
+
+  public void setRejected_reason(RejectedReason rejected_reason) {
+    this.rejected_reason = rejected_reason;
+  }
+
+  public CancelledReason getCancelled_reason() {
+    return cancelled_reason;
+  }
+
+  public void setCancelled_reason(CancelledReason cancelled_reason) {
+    this.cancelled_reason = cancelled_reason;
   }
 }
