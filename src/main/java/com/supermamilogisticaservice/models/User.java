@@ -1,38 +1,25 @@
 package com.supermamilogisticaservice.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "User")
 @Table(name = "\"Usuarios\"", schema = "public")
-public class User {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Integer id;
+@PrimaryKeyJoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_user_employee"))
+public class User extends Employee implements Serializable {
 
     @Column(name = "username", nullable = false)
     private String username;
 
-    // password
+    @Column(name = "password", nullable = false)
+    private String password;
 
-    @Column(name = "id_rol", nullable = false)
-    private Integer id_rol;
+    @ManyToOne()
+    @JoinColumn(name = "id_rol", foreignKey = @ForeignKey(name = "fk_employee_rol", value = ConstraintMode.CONSTRAINT))
+    private Rol rol;
 
-    @Column(name = "estado", nullable = false)
-    private Boolean estado;
-
-    @Column(name = "id_empleado", nullable = false)
-    private Integer id_empleado;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = Boolean.FALSE;
 
     public String getUsername() {
         return username;
@@ -42,27 +29,27 @@ public class User {
         this.username = username;
     }
 
-    public Integer getId_rol() {
-        return id_rol;
+    public String getPassword() {
+        return password;
     }
 
-    public void setId_rol(Integer id_rol) {
-        this.id_rol = id_rol;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Boolean getEstado() {
-        return estado;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
-    public Integer getId_empleado() {
-        return id_empleado;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setId_empleado(Integer id_empleado) {
-        this.id_empleado = id_empleado;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
