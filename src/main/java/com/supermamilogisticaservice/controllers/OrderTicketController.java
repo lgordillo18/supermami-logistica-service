@@ -1,9 +1,6 @@
 package com.supermamilogisticaservice.controllers;
 
-import com.supermamilogisticaservice.dtos.OrderTicketDto;
-import com.supermamilogisticaservice.dtos.RolDto;
-import com.supermamilogisticaservice.dtos.StatusDto;
-import com.supermamilogisticaservice.dtos.TicketStatusDto;
+import com.supermamilogisticaservice.dtos.*;
 import com.supermamilogisticaservice.models.*;
 import com.supermamilogisticaservice.services.EmployeeService;
 import com.supermamilogisticaservice.services.OfficeService;
@@ -53,7 +50,8 @@ public class OrderTicketController {
                 ticket.getOffice().getName(),
                 ticket.getDate(),
                 ticket.getTicket_status().getName(),
-                ticket.getEmployee().getFirst_name());
+                ticket.getEmployee().getFirst_name(),
+                ticket.getEmployee().getLast_name());
         order_tickets.add(newOrderTicket);
       }
       return new ResponseEntity<>(order_tickets, HttpStatus.OK);
@@ -63,42 +61,47 @@ public class OrderTicketController {
     }
   }
 
-
-  // Orden de pedido con filtro de Empleado
-  @GetMapping("/order-tickets/{employee_id}")
+  // Orden de pedido con filtro de Empleado o Repartidor
+  @GetMapping("/order-tickets-by-employee/{employee_id}")
   public ResponseEntity getAllOrderTicketsByEmployee(@PathVariable("employee_id") int employee_id) {
-    ArrayList<OrderTicketDto> order_tickets = new ArrayList<OrderTicketDto>();
-
     try {
       Optional<Employee> employee = employeeService.getEmployee(employee_id);
 
       if (employee.isPresent()) {
         try {
-          List<TicketStatusDto> status = new ArrayList<>();
+          ArrayList<OrderTicketDto> pendingTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> approvedTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> rejectedTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> deliveredTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> cancelledTickets = new ArrayList<OrderTicketDto>();
+
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByEmployee(employee);
           for (OrderTicket ticket: arrayTickets) {
-            if (ticket.getTicket_status().getName().equals("Aprobado"))
-              return orderTicketService.getOrderTicket(employee_id)
-                      .map(statusTicket -> new ResponseEntity<>(statusTicket, HttpStatus.OK))
-                      .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name());
 
-            if (ticket.getTicket_status().getName().equals("Pendiente"))
-              return orderTicketService.getOrderTicket(employee_id)
-                      .map(statusTicket -> new ResponseEntity<>(statusTicket, HttpStatus.OK))
-                      .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-
-            if (ticket.getTicket_status().getName().equals("Rechazado"))
-              return orderTicketService.getOrderTicket(employee_id)
-                      .map(statusTicket -> new ResponseEntity<>(statusTicket, HttpStatus.OK))
-                      .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-
-            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(),
-                    ticket.getOffice().getName(),
-                    ticket.getDate(),
-                    ticket.getTicket_status().getName(),
-                    ticket.getEmployee().getFirst_name());
-            order_tickets.add(newOrderTicket);
+            // Pendiente (1)
+            if (ticket.getTicket_status().getId() == 1) {
+              pendingTickets.add(newOrderTicket);
+            }
+            // Aprobado (2)
+            else if (ticket.getTicket_status().getId() == 2) {
+              approvedTickets.add(newOrderTicket);
+            }
+            // Rechazado (3)
+            else if (ticket.getTicket_status().getId() == 3) {
+              rejectedTickets.add(newOrderTicket);
+            }
+            // Entregado (4)
+            else if (ticket.getTicket_status().getId() == 4) {
+              deliveredTickets.add(newOrderTicket);
+            }
+            // Cancelado
+            else {
+              cancelledTickets.add(newOrderTicket);
+            }
           }
+
+          OrderTicketFullDto order_tickets = new OrderTicketFullDto(pendingTickets, approvedTickets, rejectedTickets, deliveredTickets, cancelledTickets);
           return new ResponseEntity<>(order_tickets, HttpStatus.OK);
         }
         catch ( Exception e ) {
@@ -113,25 +116,47 @@ public class OrderTicketController {
   }
 
 
-  //Endpoint de tickets filtrados por sucursal
-  @GetMapping("/order-ticket/{office_id}")
+  //Endpoint de tickets filtrados por sucursal ( PARA ROL ENCARGADO )
+  @GetMapping("/order-tickets-by-office/{office_id}")
   public ResponseEntity getAllOrderTicketsByOffice(@PathVariable("office_id") int office_id) {
-    ArrayList<OrderTicketDto> order_tickets = new ArrayList<OrderTicketDto>();
-
     try {
       Optional<Office> office = officeService.getOffice(office_id);
       if (office.isPresent()) {
         try {
-          Iterable<OrderTicket> tickets = orderTicketService.getAllOrdersByOffice(office);
-          for (OrderTicket ticket: tickets) {
-            OrderTicketDto newOrderTicket = new OrderTicketDto(
-                    ticket.getId(),
-                    ticket.getOffice().getName(),
-                    ticket.getDate(),
-                    ticket.getTicket_status().getName(),
-                    ticket.getEmployee().getFirst_name());
-            order_tickets.add(newOrderTicket);
+          ArrayList<OrderTicketDto> pendingTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> approvedTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> rejectedTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> deliveredTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> cancelledTickets = new ArrayList<OrderTicketDto>();
+
+          Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByOffice(office);
+
+          for (OrderTicket ticket: arrayTickets) {
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name());
+
+            // Pendiente (1)
+            if (ticket.getTicket_status().getId() == 1) {
+              pendingTickets.add(newOrderTicket);
+            }
+            // Aprobado (2)
+            else if (ticket.getTicket_status().getId() == 2) {
+              approvedTickets.add(newOrderTicket);
+            }
+            // Rechazado (3)
+            else if (ticket.getTicket_status().getId() == 3) {
+              rejectedTickets.add(newOrderTicket);
+            }
+            // Entregado (4)
+            else if (ticket.getTicket_status().getId() == 4) {
+              deliveredTickets.add(newOrderTicket);
+            }
+            // Cancelado
+            else {
+              cancelledTickets.add(newOrderTicket);
+            }
           }
+
+          OrderTicketFullDto order_tickets = new OrderTicketFullDto(pendingTickets, approvedTickets, rejectedTickets, deliveredTickets, cancelledTickets);
           return new ResponseEntity<>(order_tickets, HttpStatus.OK);
         }
         catch ( Exception e ) {
@@ -157,6 +182,41 @@ public class OrderTicketController {
         status.add(newTicketStatusDto);
       }
       return new ResponseEntity<>(status, HttpStatus.OK);
+    }
+    catch ( Exception e ) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
+    }
+  }
+
+  // Endpoint para marcar si un ticket fue entregado, rechazado, cancelado o aprobado
+  @PutMapping("/order-ticket/{id}")
+  public ResponseEntity modifyOrderTicket(@PathVariable("id") int id, @RequestBody OrderTicket order_ticket) {
+    Optional<OrderTicket> orderTicketData = orderTicketService.getOrderTicket(id);
+
+    if (orderTicketData.isPresent()) {
+      orderTicketService.saveOrder(order_ticket);
+      return new ResponseEntity<>("Success", HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @GetMapping("/order-ticket/rejected-reasons")
+  public ResponseEntity getAllRejectedReasons() {
+    try {
+      ArrayList<RejectedReason> rejectedReasons = orderTicketService.getAllRejectedReasons();
+      return new ResponseEntity<>(rejectedReasons, HttpStatus.OK);
+    }
+    catch ( Exception e ) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
+    }
+  }
+
+  @GetMapping("/order-ticket/cancelled-reasons")
+  public ResponseEntity getAllCancelledReasons() {
+    try {
+      ArrayList<CancelledReason> cancelledReasons = orderTicketService.getAllCancelledReasons();
+      return new ResponseEntity<>(cancelledReasons, HttpStatus.OK);
     }
     catch ( Exception e ) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);

@@ -9,17 +9,14 @@ public class OrderTicketDto {
   private String office;
   private java.util.Date date;
   private String status;
-  private String employee;
+  private String employee_name;
 
-
-
-  public OrderTicketDto(int ticket_number, String office, Date date, String status, String employee) {
+  public OrderTicketDto(int ticket_number, String office, Date date, String status, String employee_first_name, String employee_last_name) {
     this.ticket_number = ticket_number;
     this.office = office;
     this.date = date;
     this.status = status;
-    this.employee = employee;
-
+    this.employee_name = employee_first_name + " " + employee_last_name;
   }
 
   public int getTicket_number() {
@@ -54,11 +51,11 @@ public class OrderTicketDto {
     this.status = status;
   }
 
-  public String getEmployee() {
-    return employee;
+  public String getEmployee_name() {
+    return employee_name;
   }
 
-  public void setEmployee(String employee) {
-    this.employee = employee;
+  public void setEmployee_name(String employee_name) {
+    this.employee_name = employee_name;
   }
 }

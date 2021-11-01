@@ -1,7 +1,5 @@
 package com.supermamilogisticaservice.services;
 
-import com.supermamilogisticaservice.models.Employee;
-import com.supermamilogisticaservice.models.OrderTicket;
 import com.supermamilogisticaservice.models.Rol;
 import com.supermamilogisticaservice.models.User;
 import com.supermamilogisticaservice.repositories.IRolRepository;
