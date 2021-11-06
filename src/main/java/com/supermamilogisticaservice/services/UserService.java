@@ -44,5 +44,9 @@ public class UserService {
   public ArrayList<User> getUsersByRol(Optional<Rol> rol) {
     return (ArrayList<User>) iUserRepository.findByRol(rol);
   }
+
+  public Optional<User> getUserByUsernameAndPassword (String username, String password){
+    return iUserRepository.findByUsernameAndPassword(username, password);
+  }
 }
 

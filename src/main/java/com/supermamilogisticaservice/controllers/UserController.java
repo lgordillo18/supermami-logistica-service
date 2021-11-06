@@ -32,6 +32,23 @@ public class UserController {
       }
   }
 
+  @PostMapping("/validate-user")
+  public ResponseEntity validateUser(@Validated @RequestBody UserCredentialDto user) {
+    try {
+      Optional<User> userData = userService.getUserByUsernameAndPassword(user.getUsername(), user.getPassword());
+
+      if (userData.isPresent()) {
+        UserCompleteDto userCompleteInfo = new UserCompleteDto(userData.get().getId(), userData.get().getFirst_name(), userData.get().getLast_name(), userData.get().getUsername(), userData.get().getDni(), userData.get().getPhone_number(), userData.get().getEmail(), userData.get().getAddress(), userData.get().getOffice(), userData.get().getRol(), userData.get().getArea(), userData.get().getRol().getName());
+        return new ResponseEntity<>(userCompleteInfo, HttpStatus.OK);
+      }
+
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    catch ( Exception e ) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
+    }
+  }
+
   @GetMapping("/users")
   public ResponseEntity getAllUsers() {
     ArrayList<UserDto> users = new ArrayList<UserDto>();
@@ -97,7 +114,7 @@ public class UserController {
     try {
       Optional<User> userData = userService.getUser(id);
       if (userData.isPresent()) {
-        UserCompleteDto newUserDto = new UserCompleteDto(userData.get().getId(), userData.get().getFirst_name(), userData.get().getLast_name(), userData.get().getUsername(), userData.get().getDni(), userData.get().getPhone_number(), userData.get().getEmail(), userData.get().getAddress(), userData.get().getOffice(), userData.get().getRol(), userData.get().getArea());
+        UserCompleteDto newUserDto = new UserCompleteDto(userData.get().getId(), userData.get().getFirst_name(), userData.get().getLast_name(), userData.get().getUsername(), userData.get().getDni(), userData.get().getPhone_number(), userData.get().getEmail(), userData.get().getAddress(), userData.get().getOffice(), userData.get().getRol(), userData.get().getArea(), userData.get().getRol().getName());
         return new ResponseEntity<>(newUserDto, HttpStatus.OK);
       }
 

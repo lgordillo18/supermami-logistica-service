@@ -27,6 +27,10 @@ public class OrderTicket implements Serializable {
   private Employee employee;
 
   @ManyToOne(optional = false)
+  @JoinColumn(name="origin_office_id")
+  private Office origin_office;
+
+  @ManyToOne(optional = false)
   @JoinColumn(name="office_id")
   private Office office;
 
@@ -41,6 +45,10 @@ public class OrderTicket implements Serializable {
   @ManyToOne()
   @JoinColumn(name="cancelled_reason_id")
   private CancelledReason cancelled_reason;
+
+  @Temporal(TemporalType.DATE)
+  @Column(name = "fecha_finalizacion")
+  private java.util.Date finish_date = new Date();
 
   public TicketStatus getTicket_status() {
     return ticket_status;
@@ -104,5 +112,21 @@ public class OrderTicket implements Serializable {
 
   public void setCancelled_reason(CancelledReason cancelled_reason) {
     this.cancelled_reason = cancelled_reason;
+  }
+
+  public Date getFinish_date() {
+    return finish_date;
+  }
+
+  public void setFinish_date(Date finish_date) {
+    this.finish_date = finish_date;
+  }
+
+  public Office getOrigin_office() {
+    return origin_office;
+  }
+
+  public void setOrigin_office(Office origin_office) {
+    this.origin_office = origin_office;
   }
 }
