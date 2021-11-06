@@ -33,13 +33,13 @@ public class UserController {
   }
 
   @PostMapping("/validate-user")
-  public ResponseEntity validateUser(@Validated @RequestBody UserCredentialDto user) {
+  public ResponseEntity validateUser(@Validated @RequestBody UserCredentialDto userCredential) {
     try {
-      Optional<User> userData = userService.getUserByUsernameAndPassword(user.getU(), user.getU());
+      Optional<User> userData = userService.getUserByUsernameAndPassword(userCredential.getUsername(), userCredential.getPassword());
 
       if (userData.isPresent()) {
         UserCompleteDto userCompleteInfo = new UserCompleteDto(userData.get().getId(), userData.get().getFirst_name(), userData.get().getLast_name(), userData.get().getUsername(), userData.get().getDni(), userData.get().getPhone_number(), userData.get().getEmail(), userData.get().getAddress(), userData.get().getOffice(), userData.get().getRol(), userData.get().getArea(), userData.get().getRol().getName());
-        return new ResponseEntity<>(userCompleteInfo, HttpStatus.OK);
+        return new ResponseEntity<>(userCompleteInfo, HttpStatus.ACCEPTED);
       }
 
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);

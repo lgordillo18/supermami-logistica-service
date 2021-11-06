@@ -1,22 +1,22 @@
 package com.supermamilogisticaservice.dtos;
 
 public class UserCredentialDto {
-  private String u;
-  private String p;
+  private String username;
+  private String password;
 
-  public String getU() {
-    return u;
+  public String getUsername() {
+    return username;
   }
 
-  public void setU(String u) {
-    this.u = u;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
-  public String getP() {
-    return p;
+  public String getPassword() {
+    return password;
   }
 
-  public void setP(String p) {
-    this.p = p;
+  public void setPassword(String password) {
+    this.password = password;
   }
 }
