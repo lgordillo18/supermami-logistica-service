@@ -32,6 +32,7 @@ public class UserController {
       }
   }
 
+  @CrossOrigin
   @PostMapping("/validate-user")
   public ResponseEntity validateUser(@Validated @RequestBody UserCredentialDto user) {
     try {
