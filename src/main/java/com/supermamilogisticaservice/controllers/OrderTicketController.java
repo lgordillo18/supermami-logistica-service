@@ -5,6 +5,7 @@ import com.supermamilogisticaservice.models.*;
 import com.supermamilogisticaservice.services.EmployeeService;
 import com.supermamilogisticaservice.services.OfficeService;
 import com.supermamilogisticaservice.services.OrderTicketService;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +66,9 @@ public class OrderTicketController {
                 ticket.getDate(),
                 ticket.getTicket_status().getName(),
                 ticket.getEmployee().getFirst_name(),
-                ticket.getEmployee().getLast_name());
+                ticket.getEmployee().getLast_name(),
+                ticket.getOrigin_office().getName()
+        );
         order_tickets.add(newOrderTicket);
       }
       return new ResponseEntity<>(order_tickets, HttpStatus.OK);
@@ -91,7 +94,7 @@ public class OrderTicketController {
 
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByEmployee(employee);
           for (OrderTicket ticket: arrayTickets) {
-            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name());
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName());
 
             // Pendiente (1)
             if (ticket.getTicket_status().getId() == 1) {
@@ -146,7 +149,7 @@ public class OrderTicketController {
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByOffice(office);
 
           for (OrderTicket ticket: arrayTickets) {
-            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name());
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName());
 
             // Pendiente (1)
             if (ticket.getTicket_status().getId() == 1) {
@@ -204,14 +207,23 @@ public class OrderTicketController {
 
   // Endpoint para marcar si un ticket fue entregado, rechazado, cancelado o aprobado
   @PutMapping("/order-ticket/{id}")
-  public ResponseEntity modifyOrderTicket(@PathVariable("id") int id, @RequestBody OrderTicket order_ticket) {
-    Optional<OrderTicket> orderTicketData = orderTicketService.getOrderTicket(id);
+  public ResponseEntity modifyOrderTicket(@PathVariable("id") int id, @RequestBody OrderTicketModifyDto order_ticket_modify) {
+    try {
+      OrderTicket orderTicket = orderTicketService.getOneOrderTicket(id);
 
-    if (orderTicketData.isPresent()) {
-      orderTicketService.saveOrder(order_ticket);
+      orderTicket.setEmployee(order_ticket_modify.getEmployee());
+      orderTicket.setTicket_status(order_ticket_modify.getTicket_status());
+      if (order_ticket_modify.getCancelled_reason() != null) {
+        orderTicket.setCancelled_reason(order_ticket_modify.getCancelled_reason());
+      }
+      if (order_ticket_modify.getRejected_reason() != null) {
+        orderTicket.setRejected_reason(order_ticket_modify.getRejected_reason());
+      }
+
+      orderTicketService.saveOrder(orderTicket);
       return new ResponseEntity<>("Success", HttpStatus.OK);
-    } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    } catch ( Exception e ) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
     }
   }
 

@@ -6,17 +6,19 @@ import java.util.Date;
 
 public class OrderTicketDto {
   private int ticket_number;
+  private String origin_office;
   private String office;
   private java.util.Date date;
   private String status;
   private String employee_name;
 
-  public OrderTicketDto(int ticket_number, String office, Date date, String status, String employee_first_name, String employee_last_name) {
+  public OrderTicketDto(int ticket_number, String office, Date date, String status, String employee_first_name, String employee_last_name, String origin_office) {
     this.ticket_number = ticket_number;
     this.office = office;
     this.date = date;
     this.status = status;
     this.employee_name = employee_first_name + " " + employee_last_name;
+    this.origin_office = origin_office;
   }
 
   public int getTicket_number() {
@@ -57,5 +59,13 @@ public class OrderTicketDto {
 
   public void setEmployee_name(String employee_name) {
     this.employee_name = employee_name;
+  }
+
+  public String getOrigin_office() {
+    return origin_office;
+  }
+
+  public void setOrigin_office(String origin_office) {
+    this.origin_office = origin_office;
   }
 }
