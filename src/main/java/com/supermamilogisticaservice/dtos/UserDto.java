@@ -8,8 +8,9 @@ public class UserDto {
   private String rol;
   private String username;
   private boolean deleted;
+  private int office_id;
 
-  public UserDto(int id, String first_name, String last_name, String rol, String username, boolean deleted) {
+  public UserDto(int id, String first_name, String last_name, String rol, String username, boolean deleted, int office_id) {
     this.id = id;
     this.first_name = first_name;
     this.last_name = last_name;
@@ -17,6 +18,7 @@ public class UserDto {
     this.rol = rol;
     this.username = username;
     this.deleted = deleted;
+    this.office_id = office_id;
   }
 
   public boolean isDeleted() {
@@ -73,5 +75,13 @@ public class UserDto {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  public int getOffice_id() {
+    return office_id;
+  }
+
+  public void setOffice_id(int office_id) {
+    this.office_id = office_id;
   }
 }
