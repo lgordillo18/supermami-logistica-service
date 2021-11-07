@@ -8,13 +8,15 @@ public class OrderTicketFullDto {
   private ArrayList<OrderTicketDto> rejectedTickets;
   private ArrayList<OrderTicketDto> deliveredTickets;
   private ArrayList<OrderTicketDto> cancelledTickets;
+  private ArrayList<OrderTicketDto> withOutCategoryTickets;
 
-  public OrderTicketFullDto(ArrayList<OrderTicketDto> pendingTickets, ArrayList<OrderTicketDto> approvedTickets, ArrayList<OrderTicketDto> rejectedTickets, ArrayList<OrderTicketDto> deliveredTickets, ArrayList<OrderTicketDto> cancelledTickets) {
+  public OrderTicketFullDto(ArrayList<OrderTicketDto> pendingTickets, ArrayList<OrderTicketDto> approvedTickets, ArrayList<OrderTicketDto> rejectedTickets, ArrayList<OrderTicketDto> deliveredTickets, ArrayList<OrderTicketDto> cancelledTickets, ArrayList<OrderTicketDto> withOutCategoryTickets) {
     this.pendingTickets = pendingTickets;
     this.approvedTickets = approvedTickets;
     this.rejectedTickets = rejectedTickets;
     this.deliveredTickets = deliveredTickets;
     this.cancelledTickets = cancelledTickets;
+    this.withOutCategoryTickets = withOutCategoryTickets;
   }
 
   public ArrayList<OrderTicketDto> getPendingTickets() {
@@ -55,5 +57,13 @@ public class OrderTicketFullDto {
 
   public void setCancelledTickets(ArrayList<OrderTicketDto> cancelledTickets) {
     this.cancelledTickets = cancelledTickets;
+  }
+
+  public ArrayList<OrderTicketDto> getWithOutCategoryTickets() {
+    return withOutCategoryTickets;
+  }
+
+  public void setWithOutCategoryTickets(ArrayList<OrderTicketDto> withOutCategoryTickets) {
+    this.withOutCategoryTickets = withOutCategoryTickets;
   }
 }

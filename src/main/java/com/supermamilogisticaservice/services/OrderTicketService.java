@@ -34,6 +34,10 @@ public class OrderTicketService {
     return (ArrayList<OrderTicket>) iOrderTicketRepository.findByEmployee(employee);
   }
 
+  public ArrayList<OrderTicket> getAllOrdersByDealer(Optional<Employee> employee) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findByAssigned_employee(employee);
+  }
+
   public ArrayList<OrderTicket> getAllOrdersByOffice(Optional<Office> office) {
     return (ArrayList<OrderTicket>) iOrderTicketRepository.findByOffice(office);
   }
@@ -56,4 +60,6 @@ public class OrderTicketService {
   public ArrayList<CancelledReason> getAllCancelledReasons() {
     return (ArrayList<CancelledReason>) iCancelledReasonRepository.findAll();
   }
+
+  public void deleteOrder(int id) { iOrderTicketRepository.deleteById(id); }
 }

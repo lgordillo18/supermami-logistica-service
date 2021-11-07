@@ -1,5 +1,8 @@
 package com.supermamilogisticaservice.models;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -7,6 +10,8 @@ import java.util.List;
 
 @Entity(name = "OrderTicket")
 @Table(name = "\"Pedidos\"", schema = "public")
+@SQLDelete(sql = "UPDATE \"Pedidos\" SET deleted=true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class OrderTicket implements Serializable {
 
   @Id
@@ -25,6 +30,10 @@ public class OrderTicket implements Serializable {
   @ManyToOne(optional = false)
   @JoinColumn(name="employee_id")
   private Employee employee;
+
+  @ManyToOne()
+  @JoinColumn(name="assigned_employee_id")
+  private Employee assigned_employee;
 
   @ManyToOne(optional = false)
   @JoinColumn(name="origin_office_id")
@@ -49,6 +58,9 @@ public class OrderTicket implements Serializable {
   @Temporal(TemporalType.DATE)
   @Column(name = "fecha_finalizacion")
   private java.util.Date finish_date = new Date();
+
+  @Column(name = "deleted")
+  private Boolean deleted = false;
 
   public TicketStatus getTicket_status() {
     return ticket_status;
@@ -128,5 +140,21 @@ public class OrderTicket implements Serializable {
 
   public void setOrigin_office(Office origin_office) {
     this.origin_office = origin_office;
+  }
+
+  public Employee getAssigned_employee() {
+    return assigned_employee;
+  }
+
+  public void setAssigned_employee(Employee assigned_employee) {
+    this.assigned_employee = assigned_employee;
+  }
+
+  public Boolean getDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(Boolean deleted) {
+    this.deleted = deleted;
   }
 }

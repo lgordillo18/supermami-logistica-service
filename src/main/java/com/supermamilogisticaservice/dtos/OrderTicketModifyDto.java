@@ -8,18 +8,18 @@ import com.supermamilogisticaservice.models.TicketStatus;
 import java.util.Date;
 
 public class OrderTicketModifyDto {
-  private Employee employee;
+  private Employee assigned_employee;
   private TicketStatus ticket_status;
   private RejectedReason rejected_reason;
   private CancelledReason cancelled_reason;
   private java.util.Date finish_date;
 
-  public Employee getEmployee() {
-    return employee;
+  public Employee getAssigned_employee() {
+    return assigned_employee;
   }
 
-  public void setEmployee(Employee employee) {
-    this.employee = employee;
+  public void setAssigned_employee(Employee assigned_employee) {
+    this.assigned_employee = assigned_employee;
   }
 
   public TicketStatus getTicket_status() {
