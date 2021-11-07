@@ -55,7 +55,7 @@ public class UserController {
     try {
       Iterable<User> arrayUsers = userService.getAllUsers();
       for (User user: arrayUsers) {
-        UserDto newUserDto = new UserDto(user.getId(), user.getFirst_name(), user.getLast_name(), user.getRol().getName(), user.getUsername(), user.isDeleted());
+        UserDto newUserDto = new UserDto(user.getId(), user.getFirst_name(), user.getLast_name(), user.getRol().getName(), user.getUsername(), user.isDeleted(), user.getOffice().getId());
         users.add(newUserDto);
       }
       return new ResponseEntity<>(users, HttpStatus.OK);
@@ -77,7 +77,7 @@ public class UserController {
         try {
           Iterable<User> arrayUsers = userService.getUsersByRol(rol);
           for (User user: arrayUsers) {
-            UserDto newUser = new UserDto(user.getId(), user.getFirst_name(), user.getLast_name(), user.getRol().getName(), user.getUsername(), user.isDeleted());
+            UserDto newUser = new UserDto(user.getId(), user.getFirst_name(), user.getLast_name(), user.getRol().getName(), user.getUsername(), user.isDeleted(), user.getOffice().getId());
             users.add(newUser);
           }
           return new ResponseEntity<>(users, HttpStatus.OK);
