@@ -42,6 +42,10 @@ public class OrderTicketService {
     return iOrderTicketRepository.findById(id);
   }
 
+  public OrderTicket getOneOrderTicket (Integer id){
+    return iOrderTicketRepository.getOne(id);
+  }
+
   public ArrayList<TicketStatus> getAllTicketStatus(){
     return (ArrayList<TicketStatus>) iTicketStatusRepository.findAll();
   }
