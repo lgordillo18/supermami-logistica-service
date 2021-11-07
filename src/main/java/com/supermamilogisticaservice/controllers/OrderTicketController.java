@@ -270,7 +270,7 @@ public class OrderTicketController {
       }
 
       orderTicketService.saveOrder(orderTicket);
-      return new ResponseEntity<>("Success", HttpStatus.OK);
+      return new ResponseEntity<>(orderTicket, HttpStatus.OK);
     } catch ( Exception e ) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
     }
