@@ -5,7 +5,6 @@ import com.supermamilogisticaservice.models.*;
 import com.supermamilogisticaservice.services.EmployeeService;
 import com.supermamilogisticaservice.services.OfficeService;
 import com.supermamilogisticaservice.services.OrderTicketService;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,7 +77,7 @@ public class OrderTicketController {
     }
   }
 
-  // Orden de pedido con filtro de Empleado o Repartidor
+  // Orden de pedido con filtro de Empleado
   @GetMapping("/order-tickets-by-employee/{employee_id}")
   public ResponseEntity getAllOrderTicketsByEmployee(@PathVariable("employee_id") int employee_id) {
     try {
@@ -91,6 +90,7 @@ public class OrderTicketController {
           ArrayList<OrderTicketDto> rejectedTickets = new ArrayList<OrderTicketDto>();
           ArrayList<OrderTicketDto> deliveredTickets = new ArrayList<OrderTicketDto>();
           ArrayList<OrderTicketDto> cancelledTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> withOutCategory = new ArrayList<OrderTicketDto>();
 
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByEmployee(employee);
           for (OrderTicket ticket: arrayTickets) {
@@ -108,30 +108,74 @@ public class OrderTicketController {
             else if (ticket.getTicket_status().getId() == 3) {
               rejectedTickets.add(newOrderTicket);
             }
-            // Entregado (4)
-            else if (ticket.getTicket_status().getId() == 4) {
-              deliveredTickets.add(newOrderTicket);
-            }
-            // Cancelado
             else {
-              cancelledTickets.add(newOrderTicket);
+              withOutCategory.add(newOrderTicket);
             }
           }
 
-          OrderTicketFullDto order_tickets = new OrderTicketFullDto(pendingTickets, approvedTickets, rejectedTickets, deliveredTickets, cancelledTickets);
+          OrderTicketFullDto order_tickets = new OrderTicketFullDto(pendingTickets, approvedTickets, rejectedTickets, deliveredTickets, cancelledTickets, withOutCategory);
           return new ResponseEntity<>(order_tickets, HttpStatus.OK);
         }
         catch ( Exception e ) {
           return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
       } else {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+        return new ResponseEntity<>("Employee not found", HttpStatus.NOT_FOUND);
       }
     } catch ( Exception e ) {
-      return new ResponseEntity<>("Employee not found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
     }
   }
 
+  // Orden de pedido con filtro de Repartidor
+  @GetMapping("/order-tickets-by-dealer/{dealer_id}")
+  public ResponseEntity getAllOrderTicketsByDealer(@PathVariable("dealer_id") int dealer_id) {
+    try {
+      Optional<Employee> employee = employeeService.getEmployee(dealer_id);
+
+      if (employee.isPresent()) {
+        try {
+          ArrayList<OrderTicketDto> pendingTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> rejectedTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> approvedTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> deliveredTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> cancelledTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> withOutCategory = new ArrayList<OrderTicketDto>();
+
+          Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByDealer(employee);
+          for (OrderTicket ticket: arrayTickets) {
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName());
+
+            // Aprobado (2)
+            if (ticket.getTicket_status().getId() == 2) {
+              approvedTickets.add(newOrderTicket);
+            }
+            // Entregado (4)
+            else if (ticket.getTicket_status().getId() == 4) {
+              deliveredTickets.add(newOrderTicket);
+            }
+            // Cancelado (5)
+            else if (ticket.getTicket_status().getId() == 5) {
+              cancelledTickets.add(newOrderTicket);
+            }
+            else {
+              withOutCategory.add(newOrderTicket);
+            }
+          }
+
+          OrderTicketFullDto order_tickets = new OrderTicketFullDto(pendingTickets, approvedTickets, rejectedTickets, deliveredTickets, cancelledTickets, withOutCategory);
+          return new ResponseEntity<>(order_tickets, HttpStatus.OK);
+        }
+        catch ( Exception e ) {
+          return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
+        }
+      } else {
+        return new ResponseEntity<>("Employee not found", HttpStatus.NOT_FOUND);
+      }
+    } catch ( Exception e ) {
+      return new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
+    }
+  }
 
   //Endpoint de tickets filtrados por sucursal ( PARA ROL ENCARGADO )
   @GetMapping("/order-tickets-by-office/{office_id}")
@@ -145,6 +189,7 @@ public class OrderTicketController {
           ArrayList<OrderTicketDto> rejectedTickets = new ArrayList<OrderTicketDto>();
           ArrayList<OrderTicketDto> deliveredTickets = new ArrayList<OrderTicketDto>();
           ArrayList<OrderTicketDto> cancelledTickets = new ArrayList<OrderTicketDto>();
+          ArrayList<OrderTicketDto> withOutCategory = new ArrayList<OrderTicketDto>();
 
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByOffice(office);
 
@@ -167,23 +212,27 @@ public class OrderTicketController {
             else if (ticket.getTicket_status().getId() == 4) {
               deliveredTickets.add(newOrderTicket);
             }
+            // Entregado (5)
+            else if (ticket.getTicket_status().getId() == 5) {
+              cancelledTickets.add(newOrderTicket);
+            }
             // Cancelado
             else {
-              cancelledTickets.add(newOrderTicket);
+              withOutCategory.add(newOrderTicket);
             }
           }
 
-          OrderTicketFullDto order_tickets = new OrderTicketFullDto(pendingTickets, approvedTickets, rejectedTickets, deliveredTickets, cancelledTickets);
+          OrderTicketFullDto order_tickets = new OrderTicketFullDto(pendingTickets, approvedTickets, rejectedTickets, deliveredTickets, cancelledTickets, withOutCategory);
           return new ResponseEntity<>(order_tickets, HttpStatus.OK);
         }
         catch ( Exception e ) {
           return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
       } else {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+        return new ResponseEntity<>("Employee not found", HttpStatus.NOT_FOUND);
       }
     } catch ( Exception e ) {
-      return new ResponseEntity<>("Office not found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
     }
   }
 
@@ -211,7 +260,7 @@ public class OrderTicketController {
     try {
       OrderTicket orderTicket = orderTicketService.getOneOrderTicket(id);
 
-      orderTicket.setEmployee(order_ticket_modify.getEmployee());
+      orderTicket.setAssigned_employee(order_ticket_modify.getAssigned_employee());
       orderTicket.setTicket_status(order_ticket_modify.getTicket_status());
       if (order_ticket_modify.getCancelled_reason() != null) {
         orderTicket.setCancelled_reason(order_ticket_modify.getCancelled_reason());
@@ -247,5 +296,10 @@ public class OrderTicketController {
     catch ( Exception e ) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
     }
+  }
+
+  @DeleteMapping("/order-ticket/{id}")
+  public void deleteOrderTicket(@PathVariable int id) {
+    orderTicketService.deleteOrder(id);
   }
 }
