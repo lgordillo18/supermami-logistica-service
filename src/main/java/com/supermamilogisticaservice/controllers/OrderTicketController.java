@@ -260,8 +260,10 @@ public class OrderTicketController {
     try {
       OrderTicket orderTicket = orderTicketService.getOneOrderTicket(id);
 
-      orderTicket.setAssigned_employee(order_ticket_modify.getAssigned_employee());
       orderTicket.setTicket_status(order_ticket_modify.getTicket_status());
+      if (order_ticket_modify.getAssigned_employee() != null) {
+        orderTicket.setAssigned_employee(order_ticket_modify.getAssigned_employee());
+      }
       if (order_ticket_modify.getCancelled_reason() != null) {
         orderTicket.setCancelled_reason(order_ticket_modify.getCancelled_reason());
       }
