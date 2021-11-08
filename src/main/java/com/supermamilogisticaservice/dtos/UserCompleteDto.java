@@ -16,8 +16,9 @@ public class UserCompleteDto {
   private int id_office;
   private int id_rol;
   private int id_area;
+  private String rol_name;
 
-  public UserCompleteDto(int id, String first_name, String last_name, String username, String dni, String phone_number, String email, String address, Office office, Rol rol, Area area) {
+  public UserCompleteDto(int id, String first_name, String last_name, String username, String dni, String phone_number, String email, String address, Office office, Rol rol, Area area, String rol_name) {
     this.id = id;
     this.first_name = first_name;
     this.last_name = last_name;
@@ -31,6 +32,7 @@ public class UserCompleteDto {
     if (area != null) {
       this.id_area = area.getId();
     }
+    this.rol_name = rol_name;
   }
 
   public int getId() {
@@ -119,5 +121,13 @@ public class UserCompleteDto {
 
   public void setId_area(int id_area) {
     this.id_area = id_area;
+  }
+
+  public String getRol_name() {
+    return rol_name;
+  }
+
+  public void setRol_name(String rol_name) {
+    this.rol_name = rol_name;
   }
 }

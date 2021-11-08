@@ -11,8 +11,9 @@ public class VehicleDto {
   private String employeeLastName;
   private String employeeFullName;
   private boolean deleted;
+  private int vehicle_office_id;
 
-  public VehicleDto(int id, String patent, String vehicleBrand, String vehicleModel, String vehicleStatus, String employeeFirstName, String employeeLastName, boolean deleted) {
+  public VehicleDto(int id, String patent, String vehicleBrand, String vehicleModel, String vehicleStatus, String employeeFirstName, String employeeLastName, boolean deleted, int vehicle_office_id) {
     this.id = id;
     this.patent = patent;
     this.vehicleBrand = vehicleBrand;
@@ -20,6 +21,7 @@ public class VehicleDto {
     this.vehicleStatus = vehicleStatus;
     this.employeeFullName = employeeFirstName + " " + employeeLastName;
     this.deleted = deleted;
+    this.vehicle_office_id = vehicle_office_id;
   }
 
   public int getId() {
@@ -92,5 +94,13 @@ public class VehicleDto {
 
   public void setDeleted(boolean deleted) {
     this.deleted = deleted;
+  }
+
+  public int getVehicle_office_id() {
+    return vehicle_office_id;
+  }
+
+  public void setVehicle_office_id(int vehicle_office_id) {
+    this.vehicle_office_id = vehicle_office_id;
   }
 }

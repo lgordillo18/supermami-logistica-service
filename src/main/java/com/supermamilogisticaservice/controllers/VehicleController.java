@@ -39,7 +39,7 @@ public class VehicleController {
     try {
       Iterable<Vehicle> arrayVehicles = vehicleService.getAllVehicles();
       for (Vehicle vehicle: arrayVehicles) {
-        VehicleDto newVehicleDto = new VehicleDto(vehicle.getId(), vehicle.getPatent(), vehicle.getVehicleBrand(), vehicle.getVehicleModel(), vehicle.getVehicleStatus().getName(), vehicle.getEmployee().getFirst_name(), vehicle.getEmployee().getLast_name(), vehicle.isDeleted());
+        VehicleDto newVehicleDto = new VehicleDto(vehicle.getId(), vehicle.getPatent(), vehicle.getVehicleBrand(), vehicle.getVehicleModel(), vehicle.getVehicleStatus().getName(), vehicle.getEmployee().getFirst_name(), vehicle.getEmployee().getLast_name(), vehicle.isDeleted(), vehicle.getEmployee().getOffice().getId());
         vehicles.add(newVehicleDto);
       }
       return new ResponseEntity<>(vehicles, HttpStatus.OK);

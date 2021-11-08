@@ -32,13 +32,30 @@ public class UserController {
       }
   }
 
+  @PostMapping("/validate-user")
+  public ResponseEntity validateUser(@Validated @RequestBody UserCredentialDto userCredential) {
+    try {
+      Optional<User> userData = userService.getUserByUsernameAndPassword(userCredential.getUsername(), userCredential.getPassword());
+
+      if (userData.isPresent()) {
+        UserCompleteDto userCompleteInfo = new UserCompleteDto(userData.get().getId(), userData.get().getFirst_name(), userData.get().getLast_name(), userData.get().getUsername(), userData.get().getDni(), userData.get().getPhone_number(), userData.get().getEmail(), userData.get().getAddress(), userData.get().getOffice(), userData.get().getRol(), userData.get().getArea(), userData.get().getRol().getName());
+        return new ResponseEntity<>(userCompleteInfo, HttpStatus.ACCEPTED);
+      }
+
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    catch ( Exception e ) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
+    }
+  }
+
   @GetMapping("/users")
   public ResponseEntity getAllUsers() {
     ArrayList<UserDto> users = new ArrayList<UserDto>();
     try {
       Iterable<User> arrayUsers = userService.getAllUsers();
       for (User user: arrayUsers) {
-        UserDto newUserDto = new UserDto(user.getId(), user.getFirst_name(), user.getLast_name(), user.getRol().getName(), user.getUsername(), user.isDeleted());
+        UserDto newUserDto = new UserDto(user.getId(), user.getFirst_name(), user.getLast_name(), user.getRol().getName(), user.getUsername(), user.isDeleted(), user.getOffice().getId());
         users.add(newUserDto);
       }
       return new ResponseEntity<>(users, HttpStatus.OK);
@@ -60,7 +77,7 @@ public class UserController {
         try {
           Iterable<User> arrayUsers = userService.getUsersByRol(rol);
           for (User user: arrayUsers) {
-            UserDto newUser = new UserDto(user.getId(), user.getFirst_name(), user.getLast_name(), user.getRol().getName(), user.getUsername(), user.isDeleted());
+            UserDto newUser = new UserDto(user.getId(), user.getFirst_name(), user.getLast_name(), user.getRol().getName(), user.getUsername(), user.isDeleted(), user.getOffice().getId());
             users.add(newUser);
           }
           return new ResponseEntity<>(users, HttpStatus.OK);
@@ -97,7 +114,7 @@ public class UserController {
     try {
       Optional<User> userData = userService.getUser(id);
       if (userData.isPresent()) {
-        UserCompleteDto newUserDto = new UserCompleteDto(userData.get().getId(), userData.get().getFirst_name(), userData.get().getLast_name(), userData.get().getUsername(), userData.get().getDni(), userData.get().getPhone_number(), userData.get().getEmail(), userData.get().getAddress(), userData.get().getOffice(), userData.get().getRol(), userData.get().getArea());
+        UserCompleteDto newUserDto = new UserCompleteDto(userData.get().getId(), userData.get().getFirst_name(), userData.get().getLast_name(), userData.get().getUsername(), userData.get().getDni(), userData.get().getPhone_number(), userData.get().getEmail(), userData.get().getAddress(), userData.get().getOffice(), userData.get().getRol(), userData.get().getArea(), userData.get().getRol().getName());
         return new ResponseEntity<>(newUserDto, HttpStatus.OK);
       }
 

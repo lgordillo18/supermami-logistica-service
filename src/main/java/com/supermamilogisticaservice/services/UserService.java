@@ -1,7 +1,5 @@
 package com.supermamilogisticaservice.services;
 
-import com.supermamilogisticaservice.models.Employee;
-import com.supermamilogisticaservice.models.OrderTicket;
 import com.supermamilogisticaservice.models.Rol;
 import com.supermamilogisticaservice.models.User;
 import com.supermamilogisticaservice.repositories.IRolRepository;
@@ -45,6 +43,10 @@ public class UserService {
 
   public ArrayList<User> getUsersByRol(Optional<Rol> rol) {
     return (ArrayList<User>) iUserRepository.findByRol(rol);
+  }
+
+  public Optional<User> getUserByUsernameAndPassword (String username, String password){
+    return iUserRepository.findByUsernameAndPassword(username, password);
   }
 }
 
