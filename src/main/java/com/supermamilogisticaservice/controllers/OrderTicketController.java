@@ -66,7 +66,10 @@ public class OrderTicketController {
                 ticket.getTicket_status().getName(),
                 ticket.getEmployee().getFirst_name(),
                 ticket.getEmployee().getLast_name(),
-                ticket.getOrigin_office().getName()
+                ticket.getOrigin_office().getName(),
+                ticket.getFinish_date(),
+                ticket.getAssigned_employee().getFirst_name(),
+                ticket.getAssigned_employee().getLast_name()
         );
         order_tickets.add(newOrderTicket);
       }
@@ -94,7 +97,7 @@ public class OrderTicketController {
 
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByEmployee(employee);
           for (OrderTicket ticket: arrayTickets) {
-            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName());
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date(), ticket.getAssigned_employee().getFirst_name(), ticket.getAssigned_employee().getLast_name());
 
             // Pendiente (1)
             if (ticket.getTicket_status().getId() == 1) {
@@ -144,7 +147,7 @@ public class OrderTicketController {
 
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByDealer(employee);
           for (OrderTicket ticket: arrayTickets) {
-            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName());
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date(), ticket.getAssigned_employee().getFirst_name(), ticket.getAssigned_employee().getLast_name());
 
             // Aprobado (2)
             if (ticket.getTicket_status().getId() == 2) {
@@ -170,7 +173,7 @@ public class OrderTicketController {
           return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
       } else {
-        return new ResponseEntity<>("Employee not found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Dealer not found", HttpStatus.NOT_FOUND);
       }
     } catch ( Exception e ) {
       return new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
@@ -194,7 +197,7 @@ public class OrderTicketController {
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByOffice(office);
 
           for (OrderTicket ticket: arrayTickets) {
-            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName());
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date(), ticket.getAssigned_employee().getFirst_name(), ticket.getAssigned_employee().getLast_name());
 
             // Pendiente (1)
             if (ticket.getTicket_status().getId() == 1) {
@@ -229,7 +232,7 @@ public class OrderTicketController {
           return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
         }
       } else {
-        return new ResponseEntity<>("Employee not found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Office not found", HttpStatus.NOT_FOUND);
       }
     } catch ( Exception e ) {
       return new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
@@ -263,6 +266,9 @@ public class OrderTicketController {
       orderTicket.setTicket_status(order_ticket_modify.getTicket_status());
       if (order_ticket_modify.getAssigned_employee() != null) {
         orderTicket.setAssigned_employee(order_ticket_modify.getAssigned_employee());
+      }
+      if (order_ticket_modify.getFinish_date() != null) {
+        orderTicket.setFinish_date(order_ticket_modify.getFinish_date());
       }
       if (order_ticket_modify.getCancelled_reason() != null) {
         orderTicket.setCancelled_reason(order_ticket_modify.getCancelled_reason());
