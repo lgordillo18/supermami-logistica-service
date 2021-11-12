@@ -4,6 +4,7 @@ import com.supermamilogisticaservice.models.OrderTicketDetail;
 import com.supermamilogisticaservice.models.TicketStatus;
 
 import java.util.List;
+import java.util.Objects;
 
 public class OrderTicketFullDetailDto {
   private int id;
@@ -69,4 +70,15 @@ public class OrderTicketFullDetailDto {
   public void setTicket_details(List<OrderTicketDetail> ticket_details) {
     this.ticket_details = ticket_details;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if(this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    OrderTicketFullDetailDto that = (OrderTicketFullDetailDto) o;
+    return Objects.equals(ticket_details, that.ticket_details);
+  }
+
+  @Override
+  public int hashCode() {return Objects.hash(ticket_details);}
 }

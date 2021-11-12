@@ -1,15 +1,25 @@
 package com.supermamilogisticaservice.services;
 
+import com.supermamilogisticaservice.dtos.OrderTicketDto;
+import com.supermamilogisticaservice.dtos.OrderTicketFullDetailDto;
+import com.supermamilogisticaservice.dtos.OrderTicketFullDto;
 import com.supermamilogisticaservice.models.*;
 import com.supermamilogisticaservice.repositories.ICancelledReasonRepository;
 import com.supermamilogisticaservice.repositories.IOrderTicketRepository;
 import com.supermamilogisticaservice.repositories.IRejectedReasonRepository;
 import com.supermamilogisticaservice.repositories.ITicketStatusRepository;
+import com.supermamilogisticaservice.utils.dateUtils;
+import com.supermamilogisticaservice.utils.orderSorterUtils;
+import javassist.NotFoundException;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderTicketService {
@@ -26,7 +36,7 @@ public class OrderTicketService {
     return iOrderTicketRepository.save(orderTicket);
   }
 
-  public ArrayList<OrderTicket> getAllOrders() {
+  public ArrayList<OrderTicket> getAllOrders(){
     return (ArrayList<OrderTicket>) iOrderTicketRepository.findAll();
   }
 
@@ -57,9 +67,23 @@ public class OrderTicketService {
   public ArrayList<RejectedReason> getAllRejectedReasons() {
     return (ArrayList<RejectedReason>) iRejectedReasonRepository.findAll();
   }
+
   public ArrayList<CancelledReason> getAllCancelledReasons() {
     return (ArrayList<CancelledReason>) iCancelledReasonRepository.findAll();
   }
 
   public void deleteOrder(int id) { iOrderTicketRepository.deleteById(id); }
+
+
+  public OrderTicket getTicketByIdNumber(Map<String, String> params, String ticketNumber) throws NotFoundException {
+    List<OrderTicket> tickets = orderSorterUtils.getSortedList(params, iOrderTicketRepository);
+    tickets.sort(new Comparator<OrderTicket>() {
+      @Override
+      public int compare(OrderTicket o1, OrderTicket o2) {
+        return o1.getTicket_status().getName().compareToIgnoreCase(o2.getTicket_status().getName());
+      }
+    });
+    return new OrderTicket();
+  }
+
 }
