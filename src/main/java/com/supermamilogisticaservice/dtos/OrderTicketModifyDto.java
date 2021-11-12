@@ -12,7 +12,7 @@ public class OrderTicketModifyDto {
   private TicketStatus ticket_status;
   private RejectedReason rejected_reason;
   private CancelledReason cancelled_reason;
-  private java.util.Date finish_date;
+  private java.util.Date finish_date = null;
 
   public Employee getAssigned_employee() {
     return assigned_employee;
