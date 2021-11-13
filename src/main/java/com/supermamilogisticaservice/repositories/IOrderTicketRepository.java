@@ -3,6 +3,7 @@ package com.supermamilogisticaservice.repositories;
 import com.supermamilogisticaservice.dtos.ProductListDto;
 import com.supermamilogisticaservice.interfaces.IOrdersByDealerList;
 import com.supermamilogisticaservice.interfaces.IProductList;
+import com.supermamilogisticaservice.interfaces.ITicketStatusByOffice;
 import com.supermamilogisticaservice.models.Employee;
 import com.supermamilogisticaservice.models.Office;
 import com.supermamilogisticaservice.models.OrderTicket;
@@ -32,7 +33,6 @@ public interface IOrderTicketRepository extends JpaRepository<OrderTicket, Integ
           "ORDER BY SUM(otd.cantidad) DESC ",
           nativeQuery = true)
   List<IProductList> findTop10ProductsByOffice(int office_id);
-
 
   @Query(value = "SELECT per.nombre as firstName, per.apellido as lastName, s.nombre as office, COUNT(p.id) as total " +
           "FROM \"Pedidos\" p " +
@@ -74,6 +74,45 @@ public interface IOrderTicketRepository extends JpaRepository<OrderTicket, Integ
           nativeQuery = true)
   List<IOrdersByDealerList> findOrdersByDealerByDate(String date_from, String date_to);
 
+  @Query(value = "SELECT s.nombre AS office, et.nombre AS status, COUNT(p.id) AS total " +
+          "FROM \"Pedidos\" p " +
+          "JOIN \"EstadoTickets\" et on et.id = p.ticket_status_id " +
+          "JOIN \"Sucursales\" s on s.id = p.office_id " +
+          "GROUP BY s.nombre, et.nombre " +
+          "ORDER BY s.nombre ASC, total DESC ",
+          nativeQuery = true)
+  List<ITicketStatusByOffice> findTicketStatusByOffice();
+
+  @Query(value = "SELECT s.nombre AS office, et.nombre AS status, COUNT(p.id) AS total " +
+          "FROM \"Pedidos\" p " +
+          "JOIN \"EstadoTickets\" et on et.id = p.ticket_status_id " +
+          "JOIN \"Sucursales\" s on s.id = p.office_id " +
+          "WHERE p.office_id = ?1 " +
+          "GROUP BY s.nombre, et.nombre " +
+          "ORDER BY s.nombre ASC, total DESC ",
+          nativeQuery = true)
+  List<ITicketStatusByOffice> findTicketStatusByOfficeFilteredByOffice(int office_id);
+
+  @Query(value = "SELECT s.nombre AS office, et.nombre AS status, COUNT(p.id) AS total " +
+          "FROM \"Pedidos\" p " +
+          "JOIN \"EstadoTickets\" et on et.id = p.ticket_status_id " +
+          "JOIN \"Sucursales\" s on s.id = p.office_id " +
+          "WHERE p.fecha BETWEEN cast(?1 as date) AND cast(?2 as date) " +
+          "GROUP BY s.nombre, et.nombre " +
+          "ORDER BY s.nombre ASC, total DESC ",
+          nativeQuery = true)
+  List<ITicketStatusByOffice> findTicketStatusByOfficeFilteredByDate(String date_from, String date_to);
+
+  @Query(value = "SELECT s.nombre AS office, et.nombre AS status, COUNT(p.id) AS total " +
+          "FROM \"Pedidos\" p " +
+          "JOIN \"EstadoTickets\" et on et.id = p.ticket_status_id " +
+          "JOIN \"Sucursales\" s on s.id = p.office_id " +
+          "WHERE p.office_id = ?1 " +
+          "AND p.fecha BETWEEN cast(?2 as date) AND cast(?3 as date) " +
+          "GROUP BY s.nombre, et.nombre " +
+          "ORDER BY s.nombre ASC, total DESC ",
+          nativeQuery = true)
+  List<ITicketStatusByOffice> findTicketStatusByOfficeFilteredByOfficeAndDate(int office_id, String date_from, String date_to);
 
   @Query("SELECT o FROM OrderTicket o JOIN Employee e ON e.id = o.assigned_employee.id WHERE o.assigned_employee = ?1")
   List<OrderTicket> findByAssigned_employee(Optional<Employee> assigned_employee);
