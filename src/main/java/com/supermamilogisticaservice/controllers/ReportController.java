@@ -3,6 +3,7 @@ package com.supermamilogisticaservice.controllers;
 import com.supermamilogisticaservice.dtos.*;
 import com.supermamilogisticaservice.interfaces.IOrdersByDealerList;
 import com.supermamilogisticaservice.interfaces.IProductList;
+import com.supermamilogisticaservice.interfaces.ITicketStatusByOffice;
 import com.supermamilogisticaservice.services.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,6 +70,39 @@ public class ReportController {
       for (IOrdersByDealerList item: dataResponse) {
         OrderListByDealerDto order = new OrderListByDealerDto(item.getFirstName(), item.getLastName(), item.getOffice(), item.getTotal());
         response.add(order);
+      }
+
+      return new ResponseEntity<>(response, HttpStatus.OK);
+    } catch ( Exception e ) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e);
+    }
+  }
+
+  // Estado de pedidos por sucursal filtrados por sucursal o por fechas
+  @GetMapping(value = {"/report-ticket-status-by-office","/report-ticket-status-by-office/{office_id}", "/report-ticket-status-by-office/{date_from}/{date_to}", "/report-ticket-status-by-office/{office_id}/{date_from}/{date_to}"})
+  public ResponseEntity getReport3(@PathVariable(required = false) Integer office_id, @PathVariable(required = false) String date_from, @PathVariable(required = false) String date_to) {
+    ArrayList response = new ArrayList<>();
+    List<ITicketStatusByOffice> dataResponse = new ArrayList<>();
+
+    try {
+      // Search by office
+      if (office_id != null && date_from == null && date_to == null) {
+        dataResponse = reportService.getTicketStatusByOfficeFilteredByOffice(office_id);
+      }
+      // Search by office and date
+      else if (office_id != null && date_from != null && date_to != null) {
+        dataResponse = reportService.getTicketStatusByOfficeFilteredByOfficeAndDate(office_id, date_from, date_to);
+      }
+      // Search by date
+      else if (office_id == null && date_from != null && date_to != null) {
+        dataResponse = reportService.getTicketStatusByOfficeFilteredByDate(date_from, date_to);
+      } else {
+        dataResponse = reportService.getAllTicketStatusByOffice();
+      }
+
+      for (ITicketStatusByOffice item: dataResponse) {
+        TicketStatusByOfficeDto ticketStatus = new TicketStatusByOfficeDto(item.getOffice(), item.getStatus(), item.getTotal());
+        response.add(ticketStatus);
       }
 
       return new ResponseEntity<>(response, HttpStatus.OK);

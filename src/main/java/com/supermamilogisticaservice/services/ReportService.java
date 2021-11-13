@@ -3,6 +3,7 @@ package com.supermamilogisticaservice.services;
 import com.supermamilogisticaservice.dtos.ProductListDto;
 import com.supermamilogisticaservice.interfaces.IOrdersByDealerList;
 import com.supermamilogisticaservice.interfaces.IProductList;
+import com.supermamilogisticaservice.interfaces.ITicketStatusByOffice;
 import com.supermamilogisticaservice.repositories.IOrderTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,21 @@ public class ReportService {
 
   public List<IOrdersByDealerList> getOrdersByDealerByDate(String date_from, String date_to) {
     return (List<IOrdersByDealerList>) iOrderTicketRepository.findOrdersByDealerByDate(date_from, date_to);
+  }
+
+  public List<ITicketStatusByOffice> getAllTicketStatusByOffice() {
+    return (List<ITicketStatusByOffice>) iOrderTicketRepository.findTicketStatusByOffice();
+  }
+
+  public List<ITicketStatusByOffice> getTicketStatusByOfficeFilteredByOffice(int office_id) {
+    return (List<ITicketStatusByOffice>) iOrderTicketRepository.findTicketStatusByOfficeFilteredByOffice(office_id);
+  }
+
+  public List<ITicketStatusByOffice> getTicketStatusByOfficeFilteredByDate(String date_from, String date_to) {
+    return (List<ITicketStatusByOffice>) iOrderTicketRepository.findTicketStatusByOfficeFilteredByDate(date_from, date_to);
+  }
+
+  public List<ITicketStatusByOffice> getTicketStatusByOfficeFilteredByOfficeAndDate(int office_id, String date_from, String date_to) {
+    return (List<ITicketStatusByOffice>) iOrderTicketRepository.findTicketStatusByOfficeFilteredByOfficeAndDate(office_id, date_from, date_to);
   }
 }
