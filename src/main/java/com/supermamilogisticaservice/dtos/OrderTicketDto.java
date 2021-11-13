@@ -14,7 +14,7 @@ public class OrderTicketDto {
   private String assigned_employee_name;
   private java.util.Date finish_date;
 
-  public OrderTicketDto(int ticket_number, String office, Date date, String status, String employee_first_name, String employee_last_name, String origin_office, Date finish_date, String assigned_employee_first_name, String assigned_employee_last_name) {
+  public OrderTicketDto(int ticket_number, String office, Date date, String status, String employee_first_name, String employee_last_name, String origin_office, Date finish_date) {
     this.ticket_number = ticket_number;
     this.office = office;
     this.date = date;
@@ -22,7 +22,6 @@ public class OrderTicketDto {
     this.employee_name = employee_first_name + " " + employee_last_name;
     this.origin_office = origin_office;
     this.finish_date = finish_date;
-    this.assigned_employee_name = assigned_employee_first_name + " " + assigned_employee_last_name;
   }
 
   public int getTicket_number() {

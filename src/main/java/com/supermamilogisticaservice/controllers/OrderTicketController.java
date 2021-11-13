@@ -67,10 +67,13 @@ public class OrderTicketController {
                 ticket.getEmployee().getFirst_name(),
                 ticket.getEmployee().getLast_name(),
                 ticket.getOrigin_office().getName(),
-                ticket.getFinish_date(),
-                ticket.getAssigned_employee().getFirst_name(),
-                ticket.getAssigned_employee().getLast_name()
+                ticket.getFinish_date()
         );
+
+        if (ticket.getAssigned_employee() != null) {
+          newOrderTicket.setAssigned_employee_name(ticket.getAssigned_employee().getFirst_name() + " " + ticket.getAssigned_employee().getLast_name());
+        }
+
         order_tickets.add(newOrderTicket);
       }
       return new ResponseEntity<>(order_tickets, HttpStatus.OK);
@@ -97,7 +100,11 @@ public class OrderTicketController {
 
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByEmployee(employee);
           for (OrderTicket ticket: arrayTickets) {
-            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date(), ticket.getAssigned_employee().getFirst_name(), ticket.getAssigned_employee().getLast_name());
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date());
+
+            if (ticket.getAssigned_employee() != null) {
+              newOrderTicket.setAssigned_employee_name(ticket.getAssigned_employee().getFirst_name() + " " + ticket.getAssigned_employee().getLast_name());
+            }
 
             // Pendiente (1)
             if (ticket.getTicket_status().getId() == 1) {
@@ -147,7 +154,11 @@ public class OrderTicketController {
 
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByDealer(employee);
           for (OrderTicket ticket: arrayTickets) {
-            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date(), ticket.getAssigned_employee().getFirst_name(), ticket.getAssigned_employee().getLast_name());
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date());
+
+            if (ticket.getAssigned_employee() != null) {
+              newOrderTicket.setAssigned_employee_name(ticket.getAssigned_employee().getFirst_name() + " " + ticket.getAssigned_employee().getLast_name());
+            }
 
             // Aprobado (2)
             if (ticket.getTicket_status().getId() == 2) {
@@ -197,7 +208,11 @@ public class OrderTicketController {
           Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByOffice(office);
 
           for (OrderTicket ticket: arrayTickets) {
-            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date(), ticket.getAssigned_employee().getFirst_name(), ticket.getAssigned_employee().getLast_name());
+            OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date());
+
+            if (ticket.getAssigned_employee() != null) {
+              newOrderTicket.setAssigned_employee_name(ticket.getAssigned_employee().getFirst_name() + " " + ticket.getAssigned_employee().getLast_name());
+            }
 
             // Pendiente (1)
             if (ticket.getTicket_status().getId() == 1) {
