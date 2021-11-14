@@ -32,7 +32,7 @@ public class UserController {
       }
   }
 
-  @PostMapping("/validate-user")
+  @GetMapping("/validate-user")
   public ResponseEntity validateUser(@Validated @RequestBody UserCredentialDto userCredential) {
     try {
       Optional<User> userData = userService.getUserByUsernameAndPassword(userCredential.getUsername(), userCredential.getPassword());
