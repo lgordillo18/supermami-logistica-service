@@ -52,22 +52,37 @@ public class OrderTicketController {
   }
 
   // Orden de pedido sin filtros (para rol admin)
-  @GetMapping("/order-tickets")
-  public ResponseEntity getAllOrderTickets() {
+  @GetMapping(value = { "/order-tickets", "/order-tickets/{ticket_status_id}", "/order-tickets/{date_from}/{date_to}", "/order-tickets/{ticket_status_id}/{date_from}/{date_to}" })
+  public ResponseEntity getAllOrderTickets(@PathVariable(required = false) Integer ticket_status_id, @PathVariable(required = false) String date_from, @PathVariable(required = false) String date_to) {
     ArrayList<OrderTicketDto> order_tickets = new ArrayList<OrderTicketDto>();
     try {
-      Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrders();
-      for (OrderTicket ticket: arrayTickets) {
+      Iterable<OrderTicket> arrayTickets = new ArrayList<>();
 
+      // Search by ticket status
+      if (ticket_status_id != null && date_from == null && date_to == null) {
+        arrayTickets = orderTicketService.getAllOrdersByTicketStatus(ticket_status_id);
+      }
+      // Search by ticket status and date
+      else if (ticket_status_id != null && date_from != null && date_to != null) {
+        arrayTickets = orderTicketService.getAllOrdersByTicketStatusAndDate(ticket_status_id, date_from, date_to);
+      }
+      // Search by date
+      else if (ticket_status_id == null && date_from != null && date_to != null) {
+        arrayTickets = orderTicketService.getAllOrdersByDate(date_from, date_to);
+      } else {
+        arrayTickets = orderTicketService.getAllOrders();
+      }
+
+      for (OrderTicket ticket: arrayTickets) {
         OrderTicketDto newOrderTicket = new OrderTicketDto(
-                ticket.getId(),
-                ticket.getOffice().getName(),
-                ticket.getDate(),
-                ticket.getTicket_status().getName(),
-                ticket.getEmployee().getFirst_name(),
-                ticket.getEmployee().getLast_name(),
-                ticket.getOrigin_office().getName(),
-                ticket.getFinish_date()
+          ticket.getId(),
+          ticket.getOffice().getName(),
+          ticket.getDate(),
+          ticket.getTicket_status().getName(),
+          ticket.getEmployee().getFirst_name(),
+          ticket.getEmployee().getLast_name(),
+          ticket.getOrigin_office().getName(),
+          ticket.getFinish_date()
         );
 
         if (ticket.getAssigned_employee() != null) {
@@ -84,8 +99,8 @@ public class OrderTicketController {
   }
 
   // Orden de pedido con filtro de Empleado
-  @GetMapping("/order-tickets-by-employee/{employee_id}")
-  public ResponseEntity getAllOrderTicketsByEmployee(@PathVariable("employee_id") int employee_id) {
+  @GetMapping(value = {"/order-tickets-by-employee/{employee_id}", "/order-tickets-by-employee/{employee_id}/{origin_office_id}", "/order-tickets-by-employee/{employee_id}/{date_from}/{date_to}", "/order-tickets-by-employee/{employee_id}/{origin_office_id}/{date_from}/{date_to}"})
+  public ResponseEntity getAllOrderTicketsByEmployee(@PathVariable("employee_id") int employee_id, @PathVariable(required = false) Integer origin_office_id, @PathVariable(required = false) String date_from, @PathVariable(required = false) String date_to) {
     try {
       Optional<Employee> employee = employeeService.getEmployee(employee_id);
 
@@ -98,7 +113,23 @@ public class OrderTicketController {
           ArrayList<OrderTicketDto> cancelledTickets = new ArrayList<OrderTicketDto>();
           ArrayList<OrderTicketDto> withOutCategory = new ArrayList<OrderTicketDto>();
 
-          Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByEmployee(employee);
+          Iterable<OrderTicket> arrayTickets = new ArrayList<>();
+
+          // Search by office_id
+          if (origin_office_id != null && date_from == null && date_to == null) {
+            arrayTickets = orderTicketService.getAllOrdersByEmployeeAndOriginOfficeId(employee.get().getId(), origin_office_id);
+          }
+          // Search by office_id status and date
+          else if (origin_office_id != null && date_from != null && date_to != null) {
+            arrayTickets = orderTicketService.getAllOrdersByEmployeeAndOriginOfficeIdAndDate(employee.get().getId(), origin_office_id, date_from, date_to);
+          }
+          // Search by date
+          else if (origin_office_id == null && date_from != null && date_to != null) {
+            arrayTickets = orderTicketService.getAllOrdersByEmployeeAndDate(employee.get().getId(), date_from, date_to);
+          } else {
+            arrayTickets = orderTicketService.getAllOrdersByEmployee(employee);
+          }
+
           for (OrderTicket ticket: arrayTickets) {
             OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date());
 
@@ -137,9 +168,8 @@ public class OrderTicketController {
     }
   }
 
-  // Orden de pedido con filtro de Repartidor
-  @GetMapping("/order-tickets-by-dealer/{dealer_id}")
-  public ResponseEntity getAllOrderTicketsByDealer(@PathVariable("dealer_id") int dealer_id) {
+  @GetMapping(value = {"/order-tickets-by-dealer/{dealer_id}", "/order-tickets-by-dealer/{dealer_id}/{office_id}", "/order-tickets-by-dealer/{dealer_id}/{date_from}/{date_to}", "/order-tickets-by-dealer/{dealer_id}/{office_id}/{date_from}/{date_to}"})
+  public ResponseEntity getAllOrderTicketsByDealer(@PathVariable("dealer_id") int dealer_id, @PathVariable(required = false) Integer office_id, @PathVariable(required = false) String date_from, @PathVariable(required = false) String date_to) {
     try {
       Optional<Employee> employee = employeeService.getEmployee(dealer_id);
 
@@ -152,7 +182,23 @@ public class OrderTicketController {
           ArrayList<OrderTicketDto> cancelledTickets = new ArrayList<OrderTicketDto>();
           ArrayList<OrderTicketDto> withOutCategory = new ArrayList<OrderTicketDto>();
 
-          Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByDealer(employee);
+          Iterable<OrderTicket> arrayTickets = new ArrayList<>();
+
+          // Search by office_id
+          if (office_id != null && date_from == null && date_to == null) {
+            arrayTickets = orderTicketService.getAllOrdersByDealerAndOfficeId(employee.get().getId(), office_id);
+          }
+          // Search by office_id status and date
+          else if (office_id != null && date_from != null && date_to != null) {
+            arrayTickets = orderTicketService.getAllOrdersByDealerAndOfficeIdAndDate(employee.get().getId(), office_id, date_from, date_to);
+          }
+          // Search by date
+          else if (office_id == null && date_from != null && date_to != null) {
+            arrayTickets = orderTicketService.getAllOrdersByDealerAndDate(employee.get().getId(), date_from, date_to);
+          } else {
+            arrayTickets = orderTicketService.getAllOrdersByDealer(employee);
+          }
+
           for (OrderTicket ticket: arrayTickets) {
             OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date());
 
@@ -192,8 +238,8 @@ public class OrderTicketController {
   }
 
   //Endpoint de tickets filtrados por sucursal ( PARA ROL ENCARGADO )
-  @GetMapping("/order-tickets-by-office/{office_id}")
-  public ResponseEntity getAllOrderTicketsByOffice(@PathVariable("office_id") int office_id) {
+  @GetMapping(value = {"/order-tickets-by-office/{office_id}", "/order-tickets-by-office/{office_id}/{origin_office_id}", "/order-tickets-by-office/{office_id}/{date_from}/{date_to}", "/order-tickets-by-office/{office_id}/{origin_office_id}/{date_from}/{date_to}"})
+  public ResponseEntity getAllOrderTicketsByOffice(@PathVariable("office_id") int office_id, @PathVariable(required = false) Integer origin_office_id, @PathVariable(required = false) String date_from, @PathVariable(required = false) String date_to) {
     try {
       Optional<Office> office = officeService.getOffice(office_id);
       if (office.isPresent()) {
@@ -205,7 +251,22 @@ public class OrderTicketController {
           ArrayList<OrderTicketDto> cancelledTickets = new ArrayList<OrderTicketDto>();
           ArrayList<OrderTicketDto> withOutCategory = new ArrayList<OrderTicketDto>();
 
-          Iterable<OrderTicket> arrayTickets = orderTicketService.getAllOrdersByOffice(office);
+          Iterable<OrderTicket> arrayTickets = new ArrayList<>();
+
+          // Search by office_id
+          if (origin_office_id != null && date_from == null && date_to == null) {
+            arrayTickets = orderTicketService.getAllOrdersByOfficeAndOriginOfficeId(office.get().getId(), origin_office_id);
+          }
+          // Search by office_id status and date
+          else if (origin_office_id != null && date_from != null && date_to != null) {
+            arrayTickets = orderTicketService.getAllOrdersByOfficeAndOriginOfficeIdAndDate(office.get().getId(), origin_office_id, date_from, date_to);
+          }
+          // Search by date
+          else if (origin_office_id == null && date_from != null && date_to != null) {
+            arrayTickets = orderTicketService.getAllOrdersByOfficeAndDate(office.get().getId(), date_from, date_to);
+          } else {
+            arrayTickets = orderTicketService.getAllOrdersByOffice(office);
+          }
 
           for (OrderTicket ticket: arrayTickets) {
             OrderTicketDto newOrderTicket = new OrderTicketDto(ticket.getId(), ticket.getOffice().getName(), ticket.getDate(), ticket.getTicket_status().getName(), ticket.getEmployee().getFirst_name(), ticket.getEmployee().getLast_name(), ticket.getOrigin_office().getName(), ticket.getFinish_date());

@@ -117,6 +117,89 @@ public interface IOrderTicketRepository extends JpaRepository<OrderTicket, Integ
   @Query("SELECT o FROM OrderTicket o JOIN Employee e ON e.id = o.assigned_employee.id WHERE o.assigned_employee = ?1")
   List<OrderTicket> findByAssigned_employee(Optional<Employee> assigned_employee);
 
+  @Query("SELECT o FROM OrderTicket o WHERE o.ticket_status.id = ?1")
+  List<OrderTicket> findAllByTicketStatusId(int ticket_status_id);
+
+  /*@Query("SELECT o FROM OrderTicket o WHERE CAST(o.date as date) BETWEEN ?1 AND ?2")*/
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.fecha BETWEEN cast(?1 as date) AND cast(?2 as date) ",
+          nativeQuery = true)
+  List<OrderTicket> findAllByDate(String date_from, String date_to);
+
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.ticket_status_id = ?1 " +
+          "AND p.fecha BETWEEN cast(?2 as date) AND cast(?3 as date) ",
+          nativeQuery = true)
+  List<OrderTicket> findAllByTicketStatusIdAndDate(int ticket_status_id, String date_from, String date_to);
+
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.employee_id = ?1 " +
+          "AND p.origin_office_id = ?2 ",
+          nativeQuery = true)
+  List<OrderTicket> findByEmployeeAndOfficeId(int employee_id, int origin_office_id);
+
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.employee_id = ?1 " +
+          "AND p.fecha BETWEEN cast(?1 as date) AND cast(?2 as date) ",
+          nativeQuery = true)
+  List<OrderTicket> findByEmployeeAndDate(int employee_id, String date_from, String date_to);
+
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.employee_id = ?1 " +
+          "AND p.origin_office_id = ?2 " +
+          "AND p.fecha BETWEEN cast(?3 as date) AND cast(?4 as date) ",
+          nativeQuery = true)
+  List<OrderTicket> findByEmployeeAndOfficeIdAndDate(int employee_id, int origin_office_id, String date_from, String date_to);
+
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.assigned_employee_id = ?1 " +
+          "AND p.office_id = ?2 ",
+          nativeQuery = true)
+  List<OrderTicket> findByDealerAndOfficeId(int employee_id, int office_id);
+
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.assigned_employee_id = ?1 " +
+          "AND p.fecha BETWEEN cast(?1 as date) AND cast(?2 as date) ",
+          nativeQuery = true)
+  List<OrderTicket> findByDealerAndDate(int employee_id, String date_from, String date_to);
+
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.assigned_employee_id = ?1 " +
+          "AND p.office_id = ?2 " +
+          "AND p.fecha BETWEEN cast(?3 as date) AND cast(?4 as date) ",
+          nativeQuery = true)
+  List<OrderTicket> findByDealerAndOfficeIdAndDate(int employee_id, int office_id, String date_from, String date_to);
+
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.office_id = ?1 " +
+          "AND p.origin_office_id = ?2 ",
+          nativeQuery = true)
+  List<OrderTicket> findByOfficeAndOriginOfficeId(int office_id, int origin_office_id);
+
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.office_id = ?1 " +
+          "AND p.fecha BETWEEN cast(?1 as date) AND cast(?2 as date) ",
+          nativeQuery = true)
+  List<OrderTicket> findByOfficeAndDate(int office_id, String date_from, String date_to);
+
+  @Query(value = "SELECT * " +
+          "FROM \"Pedidos\" p " +
+          "WHERE p.office_id = ?1 " +
+          "AND p.origin_office_id = ?2 " +
+          "AND p.fecha BETWEEN cast(?3 as date) AND cast(?4 as date) ",
+          nativeQuery = true)
+  List<OrderTicket> findByOfficeAndOriginOfficeIdAndDate(int office_id, int origin_office_id, String date_from, String date_to);
+
   //TODO: crear endpoint ticket por sucursal
   List<OrderTicket> findByOffice(Optional<Office> office);
 }
