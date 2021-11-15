@@ -42,7 +42,7 @@ public class OrderTicketController {
     try {
       Optional<OrderTicket> orderTicketData = orderTicketService.getOrderTicket(id);
       if (orderTicketData.isPresent()) {
-        OrderTicketFullDetailDto order_ticket = new OrderTicketFullDetailDto(orderTicketData.get().getId(), orderTicketData.get().getDate().toString(), orderTicketData.get().getEmployee().getFirst_name(), orderTicketData.get().getEmployee().getLast_name(), orderTicketData.get().getOffice().getName(), orderTicketData.get().getTicket_status(), orderTicketData.get().getOrder_ticket_details());
+        OrderTicketFullDetailDto order_ticket = new OrderTicketFullDetailDto(orderTicketData.get().getId(), orderTicketData.get().getDate().toString(), orderTicketData.get().getEmployee().getFirst_name(), orderTicketData.get().getEmployee().getLast_name(), orderTicketData.get().getOffice().getName(), orderTicketData.get().getTicket_status(), orderTicketData.get().getOrder_ticket_details(), orderTicketData.get().getOrigin_office().getName());
         return new ResponseEntity<>(order_ticket, HttpStatus.OK);
       }
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
