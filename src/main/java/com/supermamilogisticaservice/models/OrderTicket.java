@@ -57,7 +57,7 @@ public class OrderTicket implements Serializable {
 
   @Temporal(TemporalType.DATE)
   @Column(name = "fecha_finalizacion")
-  private java.util.Date finish_date = new Date();
+  private java.util.Date finish_date;
 
   @Column(name = "deleted")
   private Boolean deleted = false;
@@ -126,14 +126,6 @@ public class OrderTicket implements Serializable {
     this.cancelled_reason = cancelled_reason;
   }
 
-  public Date getFinish_date() {
-    return finish_date;
-  }
-
-  public void setFinish_date(Date finish_date) {
-    this.finish_date = finish_date;
-  }
-
   public Office getOrigin_office() {
     return origin_office;
   }
@@ -156,5 +148,13 @@ public class OrderTicket implements Serializable {
 
   public void setDeleted(Boolean deleted) {
     this.deleted = deleted;
+  }
+
+  public Date getFinish_date() {
+    return finish_date;
+  }
+
+  public void setFinish_date(Date finish_date) {
+    this.finish_date = finish_date;
   }
 }
