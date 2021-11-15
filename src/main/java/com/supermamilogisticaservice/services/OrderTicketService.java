@@ -34,12 +34,48 @@ public class OrderTicketService {
     return (ArrayList<OrderTicket>) iOrderTicketRepository.findByEmployee(employee);
   }
 
+  public ArrayList<OrderTicket> getAllOrdersByEmployeeAndOriginOfficeId(int employee_id, int origin_office_id) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findByEmployeeAndOfficeId(employee_id, origin_office_id);
+  }
+
+  public ArrayList<OrderTicket> getAllOrdersByEmployeeAndDate(int employee_id, String date_from, String date_to) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findByEmployeeAndDate(employee_id, date_from, date_to);
+  }
+
+  public ArrayList<OrderTicket> getAllOrdersByEmployeeAndOriginOfficeIdAndDate(int employee_id, int origin_office_id, String date_from, String date_to) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findByEmployeeAndOfficeIdAndDate(employee_id, origin_office_id, date_from, date_to);
+  }
+
   public ArrayList<OrderTicket> getAllOrdersByDealer(Optional<Employee> employee) {
     return (ArrayList<OrderTicket>) iOrderTicketRepository.findByAssigned_employee(employee);
   }
 
+  public ArrayList<OrderTicket> getAllOrdersByDealerAndOfficeId(int employee_id, int office_id) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findByDealerAndOfficeId(employee_id, office_id);
+  }
+
+  public ArrayList<OrderTicket> getAllOrdersByDealerAndDate(int employee_id, String date_from, String date_to) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findByDealerAndDate(employee_id, date_from, date_to);
+  }
+
+  public ArrayList<OrderTicket> getAllOrdersByDealerAndOfficeIdAndDate(int employee_id, int office_id, String date_from, String date_to) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findByDealerAndOfficeIdAndDate(employee_id, office_id, date_from, date_to);
+  }
+
   public ArrayList<OrderTicket> getAllOrdersByOffice(Optional<Office> office) {
     return (ArrayList<OrderTicket>) iOrderTicketRepository.findByOffice(office);
+  }
+
+  public ArrayList<OrderTicket> getAllOrdersByOfficeAndOriginOfficeId(int office_id, int origin_office_id) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findByOfficeAndOriginOfficeId(office_id, origin_office_id);
+  }
+
+  public ArrayList<OrderTicket> getAllOrdersByOfficeAndDate(int office_id, String date_from, String date_to) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findByOfficeAndDate(office_id, date_from, date_to);
+  }
+
+  public ArrayList<OrderTicket> getAllOrdersByOfficeAndOriginOfficeIdAndDate(int office_id, int origin_office_id, String date_from, String date_to) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findByOfficeAndOriginOfficeIdAndDate(office_id, origin_office_id, date_from, date_to);
   }
 
   public Optional<OrderTicket> getOrderTicket (Integer id){
@@ -62,4 +98,16 @@ public class OrderTicketService {
   }
 
   public void deleteOrder(int id) { iOrderTicketRepository.deleteById(id); }
+
+  public ArrayList<OrderTicket> getAllOrdersByTicketStatus(int ticket_status_id) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findAllByTicketStatusId(ticket_status_id);
+  }
+
+  public ArrayList<OrderTicket> getAllOrdersByDate(String date_from, String date_to) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findAllByDate(date_from, date_to);
+  }
+
+  public ArrayList<OrderTicket> getAllOrdersByTicketStatusAndDate(int ticket_status_id, String date_from, String date_to) {
+    return (ArrayList<OrderTicket>) iOrderTicketRepository.findAllByTicketStatusIdAndDate(ticket_status_id, date_from, date_to);
+  }
 }
