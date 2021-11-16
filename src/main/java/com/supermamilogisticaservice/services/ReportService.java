@@ -23,6 +23,14 @@ public class ReportService {
     return (List<IProductList>) iOrderTicketRepository.findTop10ProductsByOffice(office_id);
   }
 
+  public List<IProductList> getTop10ProductsByDate(String date_from, String date_to) {
+    return (List<IProductList>) iOrderTicketRepository.findTop10ProductsByDate(date_from, date_to);
+  }
+
+  public List<IProductList> getTop10ProductsByOfficeAndDate(int office_id, String date_from, String date_to) {
+    return (List<IProductList>) iOrderTicketRepository.findTop10ProductsByOfficeAndDate(office_id, date_from, date_to);
+  }
+
   public List<IOrdersByDealerList> getOrdersByDealerByOffice(int office_id) {
     return (List<IOrdersByDealerList>) iOrderTicketRepository.findOrdersByDealerByOffice(office_id);
   }

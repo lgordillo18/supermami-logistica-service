@@ -34,6 +34,29 @@ public interface IOrderTicketRepository extends JpaRepository<OrderTicket, Integ
           nativeQuery = true)
   List<IProductList> findTop10ProductsByOffice(int office_id);
 
+  @Query(value = "SELECT p.codigo AS code, p.nombre AS name, s.nombre AS office, SUM(otd.cantidad) AS total " +
+          "FROM \"DetallePedidos\" otd " +
+          "JOIN \"Productos\" p ON p.id = otd.product_id " +
+          "JOIN \"Pedidos\" ot ON ot.id = otd.pedido_id " +
+          "JOIN \"Sucursales\" s ON s.id = ot.office_id " +
+          "WHERE ot.office_id = ?1 " +
+          "AND ot.fecha BETWEEN cast(?2 as date) AND cast(?3 as date) " +
+          "GROUP BY p.codigo, p.nombre, s.nombre " +
+          "ORDER BY SUM(otd.cantidad) DESC ",
+          nativeQuery = true)
+  List<IProductList> findTop10ProductsByOfficeAndDate(int office_id, String date_from, String date_to);
+
+  @Query(value = "SELECT p.codigo AS code, p.nombre AS name, s.nombre AS office, SUM(otd.cantidad) AS total " +
+          "FROM \"DetallePedidos\" otd " +
+          "JOIN \"Productos\" p ON p.id = otd.product_id " +
+          "JOIN \"Pedidos\" ot ON ot.id = otd.pedido_id " +
+          "JOIN \"Sucursales\" s ON s.id = ot.office_id " +
+          "WHERE ot.fecha BETWEEN cast(?1 as date) AND cast(?2 as date) " +
+          "GROUP BY p.codigo, p.nombre, s.nombre " +
+          "ORDER BY SUM(otd.cantidad) DESC ",
+          nativeQuery = true)
+  List<IProductList> findTop10ProductsByDate(String date_from, String date_to);
+
   @Query(value = "SELECT per.nombre as firstName, per.apellido as lastName, s.nombre as office, COUNT(p.id) as total " +
           "FROM \"Pedidos\" p " +
           "JOIN \"EstadoTickets\" et on et.id = p.ticket_status_id " +
