@@ -21,13 +21,30 @@ public class ReportController {
   private ReportService reportService;
 
   // Top 10 de productos mas requeridos
-  @GetMapping(value = {"/report-top-10", "/report-top-10/{office_id}"})
-  public ResponseEntity getReport1(@PathVariable(required = false) Integer office_id) {
+  @GetMapping(value = {"/report-top-10", "/report-top-10/{office_id}", "/report-top-10/{date_from}/{date_to}", "/report-top-10/{office_id}/{date_from}/{date_to}"})
+  public ResponseEntity getReport1(@PathVariable(required = false) Integer office_id, @PathVariable(required = false) String date_from, @PathVariable(required = false) String date_to) {
     ArrayList response = new ArrayList<>();
 
     try {
-      if (office_id != null) {
+      // Search by office
+      if (office_id != null && date_from == null && date_to == null) {
         List<IProductList> dataResponse = reportService.getTop10ProductsByOffice(office_id);
+        for (IProductList item: dataResponse) {
+          ProductDto product = new ProductDto(item.getCode(), item.getName(), item.getTotal(), item.getOffice());
+          response.add(product);
+        }
+      }
+      // Search by office and date
+      else if (office_id != null && date_from != null && date_to != null) {
+        List<IProductList> dataResponse = reportService.getTop10ProductsByOfficeAndDate(office_id, date_from, date_to);
+        for (IProductList item: dataResponse) {
+          ProductDto product = new ProductDto(item.getCode(), item.getName(), item.getTotal(), item.getOffice());
+          response.add(product);
+        }
+      }
+      // Search by date
+      else if (office_id == null && date_from != null && date_to != null) {
+        List<IProductList> dataResponse = reportService.getTop10ProductsByDate(date_from, date_to);
         for (IProductList item: dataResponse) {
           ProductDto product = new ProductDto(item.getCode(), item.getName(), item.getTotal(), item.getOffice());
           response.add(product);
